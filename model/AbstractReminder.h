@@ -13,8 +13,8 @@ public:
     AbstractReminder(AbstractReminder& r);
 
     unsigned int getId() const;
-    QString getTitle() const;
-    QString getDescr() const;
+    QString& getTitle() const;
+    QString& getDescr() const;
 
     void setId(unsigned int);
     void setTitle(QString title);

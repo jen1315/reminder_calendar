@@ -2,7 +2,7 @@
 
 AbstractReminder::AbstractReminder(unsigned int id, QString title, QString descr) : id(id), title(title), description(descr) {}
 
-AbstractReminder::AbstractReminder(AbstractReminder& m) : id(m.id), title(m.title), description(m.description) {};
+AbstractReminder::AbstractReminder(AbstractReminder& m) : id(m.id), title(m.title), description(m.description) {}
 
 unsigned int AbstractReminder::getId() const {
     return id;
@@ -10,14 +10,6 @@ unsigned int AbstractReminder::getId() const {
 
 QString AbstractReminder::getTitle() const {
     return title;
-}
-
-QDateTime AbstractReminder::getDate() const {
-    return date;
-}
-
-bool AbstractReminder::getHasTime() const {
-    return hasTime;
 }
 
 QString AbstractReminder::getDescr() const {
@@ -34,4 +26,12 @@ void AbstractReminder::setTitle(QString title) {
 
 void AbstractReminder::setDescr(QString descr){
     this->description = descr;
+}
+
+void AbstractReminder::accept(MediaVisitor *visitor) {
+    visitor->visit(this);
+}
+
+void AbstractReminder::acceptEdit(MediaVisitor *visitor) {
+    visitor->visitEdit(this);
 }
