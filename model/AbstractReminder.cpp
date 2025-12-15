@@ -27,11 +27,3 @@ void AbstractReminder::setTitle(QString title) {
 void AbstractReminder::setDescr(QString descr){
     this->description = descr;
 }
-
-void AbstractReminder::accept(MediaVisitor *visitor) {
-    visitor->visit(this);
-}
-
-void AbstractReminder::acceptEdit(MediaVisitor *visitor) {
-    visitor->visitEdit(this);
-}

@@ -9,7 +9,7 @@ public:
     Memo(unsigned int id, QString title, QString descr, bool done);
     Memo(Memo& m);
 
-    QDateTime getIsDone() const;
+    bool getIsDone() const;
 
     void setIsDone(const bool done);
 

@@ -1,8 +1,8 @@
 #include "Event.h"
 
-Event::Event(unsigned int id, QString& name, QString& descr, QDateTime& startDate, QDateTime& endDate, bool hasTime) : AbstractReminder(id, name, descr), startDate(startDate), endDate(endDate), hasTime(hasTime) {}
+Event::Event(unsigned int id, QString name, QString descr, QDateTime& startDate, QDateTime& endDate, bool hasTime) : AbstractReminder(id, name, descr), startDate(std::make_unique<QDateTime>(startDate)), endDate(std::make_unique<QDateTime>(endDate)), hasTime(hasTime) {}
 
-Event::Event(Event& e) : AbstractReminder(e), startDate(e.startDate), endDate(e.endDate), hasTime(e.hasTime) {}
+Event::Event(Event& e) : AbstractReminder(e), startDate(e.startDate.get()), endDate(e.endDate.get()), hasTime(e.hasTime) {}
 
 QDateTime& Event::getStartDate() const {
     return *startDate;
@@ -13,7 +13,7 @@ QDateTime& Event::getEndDate() const {
 }
 
 bool Event::getHasTime() const {
-    return *hasTime;
+    return hasTime;
 }
 
 void Event::setStartDate(const QDateTime& startDate) {
@@ -28,10 +28,10 @@ void Event::setHasTime(const bool hasTime) {
     this->hasTime = hasTime;
 }
 
-void Event::accept(MediaVisitor *visitor) {
+void Event::accept(ReminderVisitor *visitor) {
     visitor->visit(this);
 }
 
-void Event::acceptEdit(MediaVisitor *visitor) {
+void Event::acceptEdit(ReminderVisitor *visitor) {
     visitor->visitEdit(this);
 }

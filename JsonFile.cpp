@@ -10,7 +10,7 @@
 
 JsonFile::JsonFile(const QString jsonUrl) {
     file = new QFile(jsonUrl);
-    lib = new QMap<int, AbstractMedia*>();
+    calendar = new QMap<int, AbstractReminder*>();
     if(!file->open(QIODevice::ReadOnly)) {
         qDebug("Errore di caricamento.");
     }
@@ -34,14 +34,14 @@ JsonFile::JsonFile(const QString jsonUrl) {
         QString descr = obj["descr"].toString();
 
         AbstractReminder *reminder;
-
+/*
         if(type=="event")
-            reminder = new Event(id, title, descr, QDateTime::fromString(obj["start_date"].toString(), "yyyy-MM-dd hh:mm:ss"), QDateTime::fromString(obj["end_date"].toString()), obj["hasTime"]);
+            reminder = new Event(id, title, descr, QDateTime::fromString(obj["start_date"].toString(), "yyyy-MM-dd hh:mm:ss"), QDateTime::fromString(obj["end_date"].toString(), "yyyy-MM-dd hh:mm:ss"), true);
         if(type=="deadline")
-            reminder = new Deadline(id, title, descr, QDateTime::fromString(obj["date"].toString(), "yyyy-MM-dd hh:mm:ss"), obj["hasTime"]);
+            reminder = new Deadline(id, title, descr, QDateTime::fromString(obj["date"].toString(), "yyyy-MM-dd hh:mm:ss"), true);
         if(type=="reminder")
-            reminder = new Memo(id, title, descr, obj["isDone"]);
-        calendar->insert(id, reminder);
+            reminder = new Memo(id, title, descr, true);
+        calendar->insert(id, reminder); */
     }
 }
 
@@ -53,7 +53,7 @@ void JsonFile::submitChanges(int id) const {
     QJsonArray array;
 
     for(auto it=calendar->begin(); it!=calendar->end(); ++it) {
-        array.append((*it)->toJson());
+        array.append((*it)->getTitle());
     }
     
     QJsonDocument doc(array);
