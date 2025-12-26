@@ -1,25 +1,25 @@
-#ifndef MEDIAWIDGET_H
-#define MEDIAWIDGET_H
+#ifndef REMINDERWIDGET_H
+#define REMINDERWIDGET_H
 
 #include <QWidget>
 #include <QLineEdit>
-#include "../model/MediaVisitor.h"
+#include "../model/ReminderVisitor.h"
 
-class MediaWidget: public QWidget, public MediaVisitor {
+class ReminderWidget: public QWidget, public ReminderVisitor {
     Q_OBJECT
 
 public:
-    MediaWidget(QWidget *parent=nullptr);
+    ReminderWidget(QWidget *parent=nullptr);
     QWidget *getWidget();
     QMap<QString, QLineEdit*> *getEdits();
 
-    void visit(const Book *book);
-    void visit(const Film *film);
-    void visit(const Article *article);
+    void visit(const Event *event);
+    void visit(const Deadline *deadline);
+    void visit(const Memo *memo);
 
-    void visitEdit(const Book *book);
-    void visitEdit(const Film *film);
-    void visitEdit(const Article *article);
+    void visitEdit(const Event *event);
+    void visitEdit(const Deadline *deadline);
+    void visitEdit(const Memo *memo);
 
 private:
     QWidget *widget;

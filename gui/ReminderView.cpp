@@ -32,9 +32,9 @@ MediaView::MediaView(QWidget *parent) : QWidget(parent) {
     setLayout(layout);
 }
 
-void MediaView::displayMedia(AbstractMedia& m) {
+void MediaView::displayReminder(AbstractReminder& m) {
     Util::clearLayout(visitLayout);
-    media = &m;
+    reminder = &m;
     titleLabel->setText("Title: " + m.getTitle());
     yearLabel->setText("Year: " + QString::number(m.getYear()));
     descrLabel->setText(m.getDescr());
@@ -47,12 +47,12 @@ void MediaView::displayMedia(AbstractMedia& m) {
     imageLabel->setPixmap(scaled);
     imageLabel->setAlignment(Qt::AlignLeft);
     
-    MediaWidget *visitor = new MediaWidget();
+    ReminderWidget *visitor = new ReminderWidget();
     m.accept(visitor);
     visitLayout->addWidget(visitor->getWidget());
 }
 
-AbstractMedia& MediaView::getMedia() const {
-    return *media;
+AbstractReminder& MediaView::getReminder() const {
+    return *reminder;
 }
 

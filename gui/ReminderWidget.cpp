@@ -1,4 +1,4 @@
-#include "MediaWidget.h"
+#include "ReminderWidget.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -8,17 +8,17 @@
 #include "../model/Film.h"
 #include "../model/Article.h"
 
-MediaWidget::MediaWidget(QWidget *parent) : QWidget(parent) {}
+ReminderWidget::ReminderWidget(QWidget *parent) : QWidget(parent) {}
 
-QWidget* MediaWidget::getWidget() {
+QWidget* ReminderWidget::getWidget() {
     return widget;
 }
 
-QMap<QString, QLineEdit*>* MediaWidget::getEdits() {
+QMap<QString, QLineEdit*>* ReminderWidget::getEdits() {
     return edits;
 }
 
-void MediaWidget::visit(const Book *book) {
+void ReminderWidget::visit(const Book *book) {
     widget = new QWidget(this);
     QLabel *authorLabel = new QLabel("Author: "+ book->getAuthor(), widget);
     QLabel *langLabel = new QLabel("Language: "+ book->getLanguage(), widget);
@@ -29,7 +29,7 @@ void MediaWidget::visit(const Book *book) {
     widget->setLayout(layout);
 }
 
-void MediaWidget::visit(const Film *film) {
+void ReminderWidget::visit(const Film *film) {
     widget = new QWidget(this);
     QLabel *directLabel = new QLabel("Director :" + film->getDirector(), widget);
     QLabel *lengthLabel = new QLabel("Length :" + QString::number(film->getHours()) + "h " + QString::number(film->getMinutes()) + "min", widget);
@@ -40,7 +40,7 @@ void MediaWidget::visit(const Film *film) {
     widget->setLayout(layout);
 }
 
-void MediaWidget::visit(const Article *article) {
+void ReminderWidget::visit(const Article *article) {
     widget = new QWidget(this);
     QLabel *authorLabel = new QLabel("Author: " + article->getAuthor(), widget);
     QLabel *magLabel = new QLabel("Magazine: " + article->getMagazine(), widget);
@@ -51,7 +51,7 @@ void MediaWidget::visit(const Article *article) {
     widget->setLayout(layout);
 }
 
-void MediaWidget::visitEdit(const Book *book) {
+void ReminderWidget::visitEdit(const Book *book) {
     widget = new QWidget(this);
     QLineEdit *authorEdit = new QLineEdit(book->getAuthor(), widget);
     QLineEdit *langEdit = new QLineEdit(book->getLanguage(), widget);
@@ -66,7 +66,7 @@ void MediaWidget::visitEdit(const Book *book) {
     edits->insert("language", langEdit);
 }
 
-void MediaWidget::visitEdit(const Film *film) {
+void ReminderWidget::visitEdit(const Film *film) {
     widget = new QWidget(this);
     QLineEdit *directEdit = new QLineEdit(film->getDirector(), widget);
     QLineEdit *hourEdit = new QLineEdit(QString::number(film->getHours()), widget);
@@ -84,7 +84,7 @@ void MediaWidget::visitEdit(const Film *film) {
     edits->insert("minutes", minEdit);
 }
 
-void MediaWidget::visitEdit(const Article *article) {
+void ReminderWidget::visitEdit(const Article *article) {
     widget = new QWidget(this);
     QLineEdit *authorEdit = new QLineEdit(article->getAuthor(), widget);
     QLineEdit *magEdit = new QLineEdit(article->getMagazine(), widget);

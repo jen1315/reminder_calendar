@@ -7,8 +7,8 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QRadioButton>
-#include "./model/AbstractMedia.h"
-#include "MediaWidget.h"
+#include "./model/AbstractReminder.h"
+#include "ReminderWidget.h"
 
 class AddView : public QWidget {
     Q_OBJECT
@@ -18,31 +18,28 @@ public:
     void clearLayout(QLayout* layout);
     
 private:
-    AbstractMedia *media;
+    AbstractReminder *reminder;
     QVBoxLayout *layout;
     QVBoxLayout *detailLayout;
 
     QLineEdit *titleEdit;
-    QLineEdit *yearEdit;
-    QLineEdit *imgEdit;
     QTextEdit *descrEdit;
-    QLineEdit *authorEdit;
-    QLineEdit *langEdit;
-    QLineEdit *directorEdit;
-    QLineEdit *hourEdit;
-    QLineEdit *minEdit;
-    QLineEdit *magazEdit;
+    QLineEdit *startDateEdit;
+    QLineEdit *endDateEdit;
+    QLineEdit *startTimeEdit;
+    QLineEdit *endTimeEdit;
+    QLineEdit *doneEdit;
 
     QPushButton *submitButton;
-    QRadioButton *bookButton;
-    QRadioButton *filmButton;
-    QRadioButton *articButton;
+    QRadioButton *eventButton;
+    QRadioButton *deadlineButton;
+    QRadioButton *memoButton;
 
 private slots:
     void toSubmit();
 
 signals:
-    void submitted(AbstractMedia*);
+    void submitted(AbstractReminder*);
 };
 
 #endif

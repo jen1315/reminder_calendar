@@ -26,9 +26,9 @@ ViewManager::ViewManager(QWidget *parent) : QMainWindow(parent) {
     connect(searchButton, &QPushButton::clicked, this, &ViewManager::viewSearch);
     connect(searchView, SIGNAL(mediaSelected(QListWidgetItem*)), this, SLOT(viewMedia(QListWidgetItem*)));
     connect(mediaView, &MediaView::toEdit, this, &ViewManager::viewEdit);
-    connect(editView, SIGNAL(submitted(AbstractMedia*)), this, SLOT(submitMedia(AbstractMedia*)));
+    connect(editView, SIGNAL(submitted(AbstractReminder*)), this, SLOT(submitMedia(AbstractReminder*)));
     connect(libraryView, &LibraryView::addClicked, this, &ViewManager::viewAdd);
-    connect(addView, SIGNAL(submitted(AbstractMedia*)), this, SLOT(addMedia(AbstractMedia*)));
+    connect(addView, SIGNAL(submitted(AbstractReminder*)), this, SLOT(addMedia(AbstractReminder*)));
 
     QToolBar *toolbar = new QToolBar(this);
     toolbar->addWidget(homeButton);
@@ -39,13 +39,13 @@ ViewManager::ViewManager(QWidget *parent) : QMainWindow(parent) {
     setCentralWidget(stackWidget);
 }
 
-void ViewManager::setMedia(QMap<int, AbstractMedia*>& lib) {
-    libraryView->displayMedia(lib);
+void ViewManager::setMedia(QMap<int, AbstractReminder*>& lib) {
+    libraryView->displayReminder(lib);
 }
 
 void ViewManager::viewMedia(QListWidgetItem* item) {
     int id = (item->data(Qt::UserRole)).toInt();
-    mediaView->displayMedia(libraryView->getMedia(id));
+    mediaView->displayReminder(libraryView->getReminder(id));
     stackWidget->setCurrentIndex(1);
 }
 
@@ -53,14 +53,14 @@ void ViewManager::viewSearch() {
     searchView->clear();
     QString item = searchBar->text();
     if (!item.isEmpty()) {
-        searchView->displayMedia(Util::search(libraryView->getLibrary(), item));
+        searchView->displayReminder(Util::search(libraryView->getLibrary(), item));
         searchBar->clear();
         stackWidget->setCurrentIndex(2);
     }
 }
 
 void ViewManager::viewEdit() {
-    editView->setMedia(mediaView->getMedia());
+    editView->setMedia(mediaView->getReminder());
     stackWidget->setCurrentIndex(3);
 }
 
@@ -72,14 +72,14 @@ void ViewManager::switchHome() {
     stackWidget->setCurrentIndex(0);
 }
 
-void ViewManager::submitMedia(AbstractMedia* media) {
-    libraryView->setMedia(*media);
-    mediaView->displayMedia(*media);
+void ViewManager::submitMedia(AbstractReminder* reminder) {
+    libraryView->setMedia(*reminder);
+    mediaView->displayReminder(*reminder);
     stackWidget->setCurrentIndex(1);
 }
 
-void ViewManager::addMedia(AbstractMedia* media) {
-    libraryView->addMedia(*media);
-    mediaView->displayMedia(*media);
+void ViewManager::addMedia(AbstractReminder* reminder) {
+    libraryView->addMedia(*reminder);
+    mediaView->displayReminder(*reminder);
     stackWidget->setCurrentIndex(1);
 }

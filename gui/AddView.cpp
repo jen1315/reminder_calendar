@@ -55,15 +55,15 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
 
 void AddView::toSubmit() {
     if(bookButton->isChecked())
-        media = new Book(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), langEdit->text());
+        reminder = new Book(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), langEdit->text());
     if(filmButton->isChecked()) {
         int h = (hourEdit->text()).toInt();
         int m = (minEdit->text()).toInt();
-        media = new Film(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), directorEdit->text(), h*60+m);
+        reminder = new Film(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), directorEdit->text(), h*60+m);
     }
     if(articButton->isChecked()) {
-        media = new Article(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), magazEdit->text());
+        reminder = new Article(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), magazEdit->text());
     }
 
-    emit submitted(media);
+    emit submitted(reminder);
 }

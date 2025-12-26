@@ -12,19 +12,17 @@ class ReminderView : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MediaView(QWidget *parent = nullptr);
-    void displayMedia(AbstractMedia& m);
-    AbstractMedia& getMedia() const;
+    explicit ReminderView(QWidget *parent = nullptr);
+    void displayReminder(AbstractReminder& m);
+    AbstractReminder& getReminder() const;
     void clearLayout(QLayout* layout);
 
 private:
-    AbstractMedia *media;
+    AbstractReminder *reminder;
     QVBoxLayout *layout;
     QPushButton *editButton;
     QLabel *titleLabel;
-    QLabel *yearLabel;
     QLabel *descrLabel;
-    QLabel *imageLabel;
     QVBoxLayout *visitLayout;
 
 signals:

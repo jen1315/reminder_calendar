@@ -2,10 +2,9 @@
 #define REMINDERLIST_VIEW_H
 
 #include <QWidget>
-#include <QMap>
 #include <QListWidget>
 #include <QPushButton>
-#include "../model/AbstractMReminder.h"
+#include "../model/ReminderList.h"
 
 
 class ReminderListView : public QWidget {
@@ -14,14 +13,11 @@ class ReminderListView : public QWidget {
 public:
     explicit ReminderListView(QWidget *parent=nullptr);
     void displayReminderList(QMap<int, AbstractReminder*>& list);
-    AbstractReminder& getReminder(int id);
-    QMap<int, AbstractReminder*>& getReminderList() const;
     void setReminder(AbstractReminder& reminder);
-    void addReminder(AbstractReminder& reminder);
     void clear();
 
 private:
-    QMap<int, AbstractReminder*> *list;
+    ReminderList *list;
     QListWidget *listWidget;
     QPushButton *addButton;
 

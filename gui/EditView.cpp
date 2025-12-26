@@ -30,45 +30,45 @@ EditView::EditView(QWidget *parent) : QWidget(parent) {
     setLayout(layout);
 }
 
-void EditView::setMedia(AbstractMedia& m) {
+void EditView::setMedia(AbstractReminder& m) {
     Util::clearLayout(detailLayout);
-    media = &m;
+    reminder = &m;
     titleEdit->setText(m.getTitle());
     yearEdit->setText(QString::number(m.getYear()));
     imgEdit->setText(m.getImg());
     descrEdit->setText(m.getDescr());
 
-    visitor = new MediaWidget();
+    visitor = new ReminderWidget();
     m.acceptEdit(visitor);
     detailLayout->addWidget(visitor->getWidget());
 }
 
 void EditView::toSubmit() {
-    media->setTitle(titleEdit->text());
-    media->setYear((yearEdit->text()).toInt());
-    media->setDescr(descrEdit->toPlainText());
-    media->setImg(imgEdit->text());
+    reminder->setTitle(titleEdit->text());
+    reminder->setYear((yearEdit->text()).toInt());
+    reminder->setDescr(descrEdit->toPlainText());
+    reminder->setImg(imgEdit->text());
 
     QMap<QString, QLineEdit*> *edits = visitor->getEdits();
-    if(dynamic_cast<Book*>(media)) {
-        Book *b = static_cast<Book*>(media);
+    if(dynamic_cast<Book*>(reminder)) {
+        Book *b = static_cast<Book*>(reminder);
         b->setAuthor((*edits)["author"]->text());
         b->setLanguage((*edits)["language"]->text());
     }
-    if(dynamic_cast<Film*>(media)) {
-        Film *f = static_cast<Film*>(media);
+    if(dynamic_cast<Film*>(reminder)) {
+        Film *f = static_cast<Film*>(reminder);
         f->setDirector((*edits)["director"]->text());
         int h = ((*edits)["hours"]->text()).toInt();
         int m = ((*edits)["minutes"]->text()).toInt();
         f->setTotMinutes(h*60+m);
     }
-    if(dynamic_cast<Article*>(media)) {
-        Article *a = static_cast<Article*>(media);
+    if(dynamic_cast<Article*>(reminder)) {
+        Article *a = static_cast<Article*>(reminder);
         a->setAuthor((*edits)["author"]->text());
         a->setMagazine((*edits)["magazine"]->text());
     }
     qDeleteAll(*edits);
     edits->clear();
     
-    emit submitted(media);
+    emit submitted(reminder);
 }
