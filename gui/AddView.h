@@ -3,10 +3,14 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QFormLayout>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QDateEdit>
+#include <QTimeEdit>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QCheckBox>
 #include "./model/AbstractReminder.h"
 #include "ReminderWidget.h"
 
@@ -21,15 +25,19 @@ private:
     AbstractReminder *reminder;
     QVBoxLayout *layout;
     QVBoxLayout *detailLayout;
+    QFormLayout *form;
+    QFormLayout *detailForm;
 
     QLineEdit *titleEdit;
     QTextEdit *descrEdit;
-    QLineEdit *startDateEdit;
-    QLineEdit *endDateEdit;
-    QLineEdit *startTimeEdit;
-    QLineEdit *endTimeEdit;
-    QLineEdit *doneEdit;
+    QDateEdit *startDateEdit;
+    QDateEdit *endDateEdit;
+    QTimeEdit *startTimeEdit;
+    QTimeEdit *endTimeEdit;
+    QCheckBox *timeEdit;
+    QCheckBox *doneEdit;
 
+    QHBoxLayout *buttons;
     QPushButton *submitButton;
     QRadioButton *eventButton;
     QRadioButton *deadlineButton;

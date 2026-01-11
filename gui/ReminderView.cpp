@@ -2,30 +2,32 @@
 #include "../model/Utilities.h"
 
 MediaView::MediaView(QWidget *parent) : QWidget(parent) {
-    editButton = new QPushButton("Edit");
     titleLabel = new QLabel();
-    yearLabel = new QLabel();
     descrLabel = new QLabel();
-    imageLabel = new QLabel();
     visitLayout = new QVBoxLayout();
     layout = new QVBoxLayout();
 
     titleLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    yearLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     descrLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    QPixmap image("../img/save.png");
+    QPixmap scaled = image.scaled(QSize(50, 50), Qt::KeepAspectRatio);
+    QLabel *imageEdit = new QLabel();
+    imageEdit->setPixmap(scaled);
+    
+    editButton = new QPushButton("Edit");
     
     QHBoxLayout *hlayout = new QHBoxLayout();
     QVBoxLayout *vlayout = new QVBoxLayout();
 
+    hlayout->addWidget(image)    
+    
     vlayout->addWidget(editButton);
     vlayout->addWidget(titleLabel);
-    vlayout->addWidget(yearLabel);
     vlayout->addWidget(descrLabel);
     vlayout->addLayout(visitLayout);
 
-    hlayout->addLayout(vlayout);
-    hlayout->addWidget(imageLabel);
-    layout->addLayout(hlayout);
+    layout->addLayout(vlayout);
 
     connect(editButton, &QPushButton::clicked, this, &MediaView::toEdit);
 
@@ -36,16 +38,7 @@ void MediaView::displayReminder(AbstractReminder& m) {
     Util::clearLayout(visitLayout);
     reminder = &m;
     titleLabel->setText("Title: " + m.getTitle());
-    yearLabel->setText("Year: " + QString::number(m.getYear()));
     descrLabel->setText(m.getDescr());
-    
-    QString imgUrl = m.getImg();
-    if(imgUrl=="")
-        imgUrl = "../img/placeholder.png";    
-    QPixmap image(imgUrl);
-    QPixmap scaled = image.scaled(QSize(200, 200), Qt::KeepAspectRatio);
-    imageLabel->setPixmap(scaled);
-    imageLabel->setAlignment(Qt::AlignLeft);
     
     ReminderWidget *visitor = new ReminderWidget();
     m.accept(visitor);

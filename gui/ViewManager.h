@@ -6,7 +6,7 @@
 #include <QLineEdit>
 #include "ReminderListView.h"
 #include "ReminderView.h"
-#include "EditView.h"
+//#include "EditView.h"
 #include "AddView.h"
 
 class ViewManager : public QMainWindow {
@@ -25,13 +25,13 @@ private:
     ReminderListView *memoView;
     ReminderView *reminderView;
     ReminderListView *todayView;
-    EditView *editView;
+    //EditView *editView;
     AddView *addView;
 
 private slots:
     void viewReminder(QListWidgetItem* item);
     void viewSearch();
-    void viewEdit();
+    //void viewEdit();
     void viewAdd();
     void submitReminder(AbstractReminder* reminder);
     void addReminder(AbstractReminder* reminder);

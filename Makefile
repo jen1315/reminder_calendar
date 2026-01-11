@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I. -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I. -I. -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I. -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = reminder_calendar1.0.0
 DISTDIR = /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/.tmp/reminder_calendar1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) /usr/lib/i386-linux-gnu/libQt5Gui.so /usr/lib/i386-linux-gnu/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) /usr/lib/i386-linux-gnu/libQt5Widgets.so /usr/lib/i386-linux-gnu/libQt5Gui.so /usr/lib/i386-linux-gnu/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,15 +53,36 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = JsonFile.cpp \
+		gui/AddView.cpp \
+		gui/ReminderListView.cpp \
+		gui/ReminderView.cpp \
+		gui/ReminderWidget.cpp \
+		gui/ViewManager.cpp \
 		model/AbstractReminder.cpp \
 		model/Deadline.cpp \
 		model/Event.cpp \
-		model/Memo.cpp 
+		model/Memo.cpp \
+		model/ReminderList.cpp moc_AddView.cpp \
+		moc_ReminderListView.cpp \
+		moc_ReminderView.cpp \
+		moc_ReminderWidget.cpp \
+		moc_ViewManager.cpp
 OBJECTS       = JsonFile.o \
+		AddView.o \
+		ReminderListView.o \
+		ReminderView.o \
+		ReminderWidget.o \
+		ViewManager.o \
 		AbstractReminder.o \
 		Deadline.o \
 		Event.o \
-		Memo.o
+		Memo.o \
+		ReminderList.o \
+		moc_AddView.o \
+		moc_ReminderListView.o \
+		moc_ReminderView.o \
+		moc_ReminderWidget.o \
+		moc_ViewManager.o
 DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -119,6 +140,7 @@ DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -130,6 +152,7 @@ DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/resources.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/moc.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/opengl.prf \
+		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/uic.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/thread.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/qmake_use.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/file_copies.prf \
@@ -138,15 +161,27 @@ DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/lex.prf \
 		reminder_calendar.pro JsonFile.h \
+		gui/AddView.h \
+		gui/ReminderListView.h \
+		gui/ReminderView.h \
+		gui/ReminderWidget.h \
+		gui/ViewManager.h \
 		model/AbstractReminder.h \
 		model/Deadline.h \
 		model/Event.h \
 		model/Memo.h \
+		model/ReminderList.h \
 		model/ReminderVisitor.h JsonFile.cpp \
+		gui/AddView.cpp \
+		gui/ReminderListView.cpp \
+		gui/ReminderView.cpp \
+		gui/ReminderWidget.cpp \
+		gui/ViewManager.cpp \
 		model/AbstractReminder.cpp \
 		model/Deadline.cpp \
 		model/Event.cpp \
-		model/Memo.cpp
+		model/Memo.cpp \
+		model/ReminderList.cpp
 QMAKE_TARGET  = reminder_calendar
 DESTDIR       = 
 TARGET        = reminder_calendar
@@ -215,6 +250,7 @@ Makefile: reminder_calendar.pro /usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qm
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -226,6 +262,7 @@ Makefile: reminder_calendar.pro /usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qm
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/resources.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/moc.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/opengl.prf \
+		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/uic.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/thread.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/qmake_use.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/file_copies.prf \
@@ -292,6 +329,7 @@ Makefile: reminder_calendar.pro /usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qm
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -303,6 +341,7 @@ Makefile: reminder_calendar.pro /usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++/qm
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/resources.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/moc.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/opengl.prf:
+/usr/lib/i386-linux-gnu/qt5/mkspecs/features/uic.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/unix/thread.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/qmake_use.prf:
 /usr/lib/i386-linux-gnu/qt5/mkspecs/features/file_copies.prf:
@@ -326,8 +365,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/i386-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents JsonFile.h model/AbstractReminder.h model/Deadline.h model/Event.h model/Memo.h model/ReminderVisitor.h $(DISTDIR)/
-	$(COPY_FILE) --parents JsonFile.cpp model/AbstractReminder.cpp model/Deadline.cpp model/Event.cpp model/Memo.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents JsonFile.h gui/AddView.h gui/ReminderListView.h gui/ReminderView.h gui/ReminderWidget.h gui/ViewManager.h model/AbstractReminder.h model/Deadline.h model/Event.h model/Memo.h model/ReminderList.h model/ReminderVisitor.h $(DISTDIR)/
+	$(COPY_FILE) --parents JsonFile.cpp gui/AddView.cpp gui/ReminderListView.cpp gui/ReminderView.cpp gui/ReminderWidget.cpp gui/ViewManager.cpp model/AbstractReminder.cpp model/Deadline.cpp model/Event.cpp model/Memo.cpp model/ReminderList.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -359,19 +398,64 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/i386-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/i386-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_AddView.cpp moc_ReminderListView.cpp moc_ReminderView.cpp moc_ReminderWidget.cpp moc_ViewManager.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_AddView.cpp moc_ReminderListView.cpp moc_ReminderView.cpp moc_ReminderWidget.cpp moc_ViewManager.cpp
+moc_AddView.cpp: gui/AddView.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		gui/ReminderWidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/i386-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/i686-linux-gnu/12/include -I/usr/local/include -I/usr/include/i386-linux-gnu -I/usr/include gui/AddView.h -o moc_AddView.cpp
+
+moc_ReminderListView.cpp: gui/ReminderListView.h \
+		model/ReminderList.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/i386-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/i686-linux-gnu/12/include -I/usr/local/include -I/usr/include/i386-linux-gnu -I/usr/include gui/ReminderListView.h -o moc_ReminderListView.cpp
+
+moc_ReminderView.cpp: gui/ReminderView.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		gui/ReminderWidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/i386-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/i686-linux-gnu/12/include -I/usr/local/include -I/usr/include/i386-linux-gnu -I/usr/include gui/ReminderView.h -o moc_ReminderView.cpp
+
+moc_ReminderWidget.cpp: gui/ReminderWidget.h \
+		model/ReminderVisitor.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/i386-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/i686-linux-gnu/12/include -I/usr/local/include -I/usr/include/i386-linux-gnu -I/usr/include gui/ReminderWidget.h -o moc_ReminderWidget.cpp
+
+moc_ViewManager.cpp: gui/ViewManager.h \
+		gui/ReminderListView.h \
+		model/ReminderList.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		gui/ReminderView.h \
+		gui/ReminderWidget.h \
+		gui/AddView.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/jen1315/Desktop/Qt/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/home/jen1315/Desktop/Qt/progetto2/reminder_calendar -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/i386-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/i686-linux-gnu/12/include -I/usr/local/include -I/usr/include/i386-linux-gnu -I/usr/include gui/ViewManager.h -o moc_ViewManager.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
+compiler_uic_make_all:
+compiler_uic_clean:
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -382,6 +466,42 @@ JsonFile.o: JsonFile.cpp JsonFile.h \
 		model/Deadline.h \
 		model/Memo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o JsonFile.o JsonFile.cpp
+
+AddView.o: gui/AddView.cpp gui/AddView.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		gui/ReminderWidget.h \
+		model/Event.h \
+		model/Deadline.h \
+		model/Memo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AddView.o gui/AddView.cpp
+
+ReminderListView.o: gui/ReminderListView.cpp gui/ReminderListView.h \
+		model/ReminderList.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReminderListView.o gui/ReminderListView.cpp
+
+ReminderView.o: gui/ReminderView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReminderView.o gui/ReminderView.cpp
+
+ReminderWidget.o: gui/ReminderWidget.cpp gui/ReminderWidget.h \
+		model/ReminderVisitor.h \
+		model/Event.h \
+		model/AbstractReminder.h \
+		model/Deadline.h \
+		model/Memo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReminderWidget.o gui/ReminderWidget.cpp
+
+ViewManager.o: gui/ViewManager.cpp gui/ViewManager.h \
+		gui/ReminderListView.h \
+		model/ReminderList.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h \
+		gui/ReminderView.h \
+		gui/ReminderWidget.h \
+		gui/AddView.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ViewManager.o gui/ViewManager.cpp
 
 AbstractReminder.o: model/AbstractReminder.cpp model/AbstractReminder.h \
 		model/ReminderVisitor.h
@@ -401,6 +521,26 @@ Memo.o: model/Memo.cpp model/Memo.h \
 		model/AbstractReminder.h \
 		model/ReminderVisitor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Memo.o model/Memo.cpp
+
+ReminderList.o: model/ReminderList.cpp model/ReminderList.h \
+		model/AbstractReminder.h \
+		model/ReminderVisitor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReminderList.o model/ReminderList.cpp
+
+moc_AddView.o: moc_AddView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_AddView.o moc_AddView.cpp
+
+moc_ReminderListView.o: moc_ReminderListView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ReminderListView.o moc_ReminderListView.cpp
+
+moc_ReminderView.o: moc_ReminderView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ReminderView.o moc_ReminderView.cpp
+
+moc_ReminderWidget.o: moc_ReminderWidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ReminderWidget.o moc_ReminderWidget.cpp
+
+moc_ViewManager.o: moc_ViewManager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ViewManager.o moc_ViewManager.cpp
 
 ####### Install
 

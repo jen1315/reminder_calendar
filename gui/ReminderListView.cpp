@@ -24,10 +24,11 @@ ReminderListView::ReminderListView(QWidget *parent) : QWidget(parent) {
     connect(addButton, &QPushButton::clicked, this, &ReminderListView::addClicked);
 }
 
-void ReminderListView::displayReminderList(QMap<int, AbstractReminder*>& l) {
-    list = new QMap<int, AbstractReminder*>(l);
+void ReminderListView::displayReminderList(ReminderList& l) {
+    list = new ReminderList(l);
     clear();
-    for(auto it=l.begin(); it!=l.end(); ++it) {
+/*
+    for(auto it : l.getReminders()) {
         QListWidgetItem *item = new QListWidgetItem();
         QVariant reminder((*it)->getId());
         item->setData(Qt::UserRole, reminder);
@@ -37,7 +38,7 @@ void ReminderListView::displayReminderList(QMap<int, AbstractReminder*>& l) {
        
         QHBoxLayout *wlayout = new QHBoxLayout();
         wlayout->addWidget(titleLabel);
-        wlayout->addWidget(yearLabel);
+        wlayout->addWidget(descrLabel);
         wlayout->addStretch();
         wlayout->setSizeConstraint(QLayout::SetFixedSize);
         widget->setLayout(wlayout);
@@ -45,32 +46,30 @@ void ReminderListView::displayReminderList(QMap<int, AbstractReminder*>& l) {
     
         listWidget->addItem(item);
         listWidget->setItemWidget(item, widget);
-    }
+    }*/
 }
 
-AbstractReminder& ReminderListView::getReminder(int id) {
-    return *((*list)[id]);
+AbstractReminder& ReminderListView::getReminder(const unsigned int id) const {
+    return list->get(id);
 }
 
 void ReminderListView::setReminder(AbstractReminder& reminder) {
     int id = reminder.getId();
-    (*list)[id] = &reminder;
-    displayReminder(*list);
+    list->add(reminder);
+    displayReminderList(*list);
 }
 
-QMap<int, AbstractReminder*>& ReminderListView::getReminderList() const {
+ReminderList& ReminderListView::getReminderList() const {
     return *list;
 }
 
-void ReminderList::clear() {
+void ReminderListView::clear() {
     listWidget->clear();
 }
 
 void ReminderListView::addReminder(AbstractReminder& reminder) {
-    int id = list->size();
-    reminder.setId(id);
-    (*list)[id] = &reminder;
-    displayReminder(*list);
+    reminder.setId(list->getNumElem());
+    ReminderListView::setReminder(reminder);
 }
 
 void ReminderListView::removeReminder() {

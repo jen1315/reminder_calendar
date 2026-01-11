@@ -7,7 +7,7 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QTabWidget>
-#include "./model/AbstractReminder.h"
+#include "../model/ReminderList.h"
 #include "ReminderWidget.h"
 
 class EditView : public QWidget {

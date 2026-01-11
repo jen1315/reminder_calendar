@@ -12,8 +12,11 @@ class ReminderListView : public QWidget {
 
 public:
     explicit ReminderListView(QWidget *parent=nullptr);
-    void displayReminderList(QMap<int, AbstractReminder*>& list);
-    void setReminder(AbstractReminder& reminder);
+    void displayReminderList(ReminderList& list);
+    ReminderList& getReminderList() const;
+    AbstractReminder& getReminder(const unsigned int id) const;
+void setReminder(AbstractReminder& reminder);
+    void addReminder(AbstractReminder& reminder);
     void clear();
 
 private:

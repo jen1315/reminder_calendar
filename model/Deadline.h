@@ -17,8 +17,8 @@ public:
     void setDate(const QDateTime& endDate);
     void setHasTime(const bool hasTime);
 
-    virtual void accept(ReminderVisitor *visitor) = 0;
-    virtual void acceptEdit(ReminderVisitor *visitor) = 0;
+    virtual void accept(ReminderVisitor *visitor);
+    virtual void acceptEdit(ReminderVisitor *visitor);
     
 private:
     std::unique_ptr<QDateTime> date;

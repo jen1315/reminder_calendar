@@ -4,9 +4,9 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QFormLayout>
-#include "../model/Book.h"
-#include "../model/Film.h"
-#include "../model/Article.h"
+#include "../model/Event.h"
+#include "../model/Deadline.h"
+#include "../model/Memo.h"
 
 ReminderWidget::ReminderWidget(QWidget *parent) : QWidget(parent) {}
 
@@ -18,21 +18,21 @@ QMap<QString, QLineEdit*>* ReminderWidget::getEdits() {
     return edits;
 }
 
-void ReminderWidget::visit(const Book *book) {
+void ReminderWidget::visit(const Event *event) {
     widget = new QWidget(this);
-    QLabel *authorLabel = new QLabel("Author: "+ book->getAuthor(), widget);
-    QLabel *langLabel = new QLabel("Language: "+ book->getLanguage(), widget);
+    QLabel *startLabel = new QLabel("Start: "+ event->getStartDate().toString("d ddd MMMM yyyy"), widget);
+    QLabel *endLabel = new QLabel("End: "+ event->getEndDate().toString("d ddd MMMM yyyy"), widget);
 
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(authorLabel);
-    layout->addWidget(langLabel);
+    layout->addWidget(startLabel);
+    layout->addWidget(endLabel);
     widget->setLayout(layout);
 }
 
-void ReminderWidget::visit(const Film *film) {
+void ReminderWidget::visit(const Deadline *deadline) {
     widget = new QWidget(this);
-    QLabel *directLabel = new QLabel("Director :" + film->getDirector(), widget);
-    QLabel *lengthLabel = new QLabel("Length :" + QString::number(film->getHours()) + "h " + QString::number(film->getMinutes()) + "min", widget);
+    QLabel *directLabel = new QLabel("Director :" + deadline->getDirector(), widget);
+    QLabel *lengthLabel = new QLabel("Length :" + QString::number(deadline->getHours()) + "h " + QString::number(deadline->getMinutes()) + "min", widget);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(directLabel);
@@ -51,10 +51,10 @@ void ReminderWidget::visit(const Article *article) {
     widget->setLayout(layout);
 }
 
-void ReminderWidget::visitEdit(const Book *book) {
+void ReminderWidget::visitEdit(const Event *event) {
     widget = new QWidget(this);
-    QLineEdit *authorEdit = new QLineEdit(book->getAuthor(), widget);
-    QLineEdit *langEdit = new QLineEdit(book->getLanguage(), widget);
+    QStartEdit *startDateEdit = new QLineEdit(event->getStartDate(), widget);
+    QLineEdit *langDateEdit = new QLineEdit(book->getEndDate(), widget);
 
     QFormLayout *form = new QFormLayout();
     form->addRow("Author:", authorEdit);
@@ -62,15 +62,15 @@ void ReminderWidget::visitEdit(const Book *book) {
     widget->setLayout(form);
 
     edits = new QMap<QString, QLineEdit*>();
-    edits->insert("author", authorEdit);
-    edits->insert("language", langEdit);
+    edits->insert("startDate", startDateEdit);
+    edits->insert("endDate", endDateEdit);
 }
 
-void ReminderWidget::visitEdit(const Film *film) {
+void ReminderWidget::visitEdit(const Event *event) {
     widget = new QWidget(this);
-    QLineEdit *directEdit = new QLineEdit(film->getDirector(), widget);
-    QLineEdit *hourEdit = new QLineEdit(QString::number(film->getHours()), widget);
-    QLineEdit *minEdit = new QLineEdit(QString::number(film->getMinutes()), widget);
+    QLineEdit *startEdit = new QLineEdit(event->getStartDate(), widget);
+    QLineEdit *endEdit = new QLineEdit(QString::number(event->getEndDate()), widget);
+    QLineEdit *timeEdit = new QLineEdit(QString::number(event->getHasTime()), widget);
 
     QFormLayout *form = new QFormLayout();
     form->addRow("Director:", directEdit);

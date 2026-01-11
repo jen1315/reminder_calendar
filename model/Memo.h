@@ -13,8 +13,8 @@ public:
 
     void setIsDone(const bool done);
 
-    virtual void accept(ReminderVisitor *visitor) = 0;
-    virtual void acceptEdit(ReminderVisitor *visitor) = 0;
+    virtual void accept(ReminderVisitor *visitor);
+    virtual void acceptEdit(ReminderVisitor *visitor);
 
 private:
     bool done;

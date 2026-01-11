@@ -1,48 +1,43 @@
 #include "AddView.h"
 
-#include <QFormLayout>
-#include "../model/Book.h"
-#include "../model/Film.h"
-#include "../model/Article.h"
+#include "../model/Event.h"
+#include "../model/Deadline.h"
+#include "../model/Memo.h"
 
 AddView::AddView(QWidget *parent) : QWidget(parent) {
     layout = new QVBoxLayout();
     titleEdit = new QLineEdit(this);
-    yearEdit = new QLineEdit(this);
-    imgEdit = new QLineEdit(this);
     descrEdit = new QTextEdit(this);
+    startDateEdit = new QDateEdit(this);
+    startTimeEdit = new QTimeEdit(this);
+    endDateEdit = new QDateEdit(this);
+    endTimeEdit = new QTimeEdit(this);
+    timeEdit = new QCheckBox("Does it have time?", this);
+    doneEdit = new QCheckBox("Is it done?", this);
+
     submitButton = new QPushButton("Submit", this);
     detailLayout = new QVBoxLayout();
-    bookButton = new QRadioButton("Book", this);
-    filmButton = new QRadioButton("Film", this);
-    articButton = new QRadioButton("Article", this);
+    eventButton = new QRadioButton("Event", this);
+    deadlineButton = new QRadioButton("Deadline", this);
+    memoButton = new QRadioButton("Memo", this);
 
-    QFormLayout *form = new QFormLayout();
+    form = new QFormLayout();
     form->addRow("Title:", titleEdit);
-    form->addRow("Year:", yearEdit);
-    form->addRow("Image path:", imgEdit);
     form->addRow("Description:", descrEdit);
     
-    QHBoxLayout *buttons = new QHBoxLayout();
-    buttons->addWidget(bookButton);
-    buttons->addWidget(filmButton);
-    buttons->addWidget(articButton);
+    buttons = new QHBoxLayout();
+    buttons->addWidget(eventButton);
+    buttons->addWidget(deadlineButton);
+    buttons->addWidget(memoButton);
     
-    QFormLayout *detailForm = new QFormLayout();
-    QLineEdit *authorEdit = new QLineEdit(this);
-    QLineEdit *langEdit = new QLineEdit(this);
-    detailForm->addRow("Author", authorEdit);
-    detailForm->addRow("Language", langEdit);
-    QLineEdit *directorEdit = new QLineEdit(this);
-    QLineEdit *hourEdit = new QLineEdit(this);
-    QLineEdit *minEdit = new QLineEdit(this);
-    detailForm->addRow("Director", directorEdit);
-    detailForm->addRow("Hours", hourEdit);
-    detailForm->addRow("Minutes", minEdit);
-    QLineEdit *magazEdit = new QLineEdit();
-    QLineEdit *author1Edit = new QLineEdit();
-    detailForm->addRow("Author", author1Edit);
-    detailForm->addRow("Magazine", magazEdit);
+    detailForm = new QFormLayout();
+    detailForm->addRow(timeEdit);
+    detailForm->addRow("From:", startDateEdit);
+    detailForm->addRow("Time:", startTimeEdit);
+    detailForm->addRow("To:", endDateEdit);
+    detailForm->addRow("Time:", endTimeEdit);
+    
+    detailForm->addRow(doneEdit);
 
     layout->addLayout(form);
     layout->addLayout(buttons);
@@ -54,15 +49,20 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
 }
 
 void AddView::toSubmit() {
-    if(bookButton->isChecked())
-        reminder = new Book(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), langEdit->text());
-    if(filmButton->isChecked()) {
-        int h = (hourEdit->text()).toInt();
-        int m = (minEdit->text()).toInt();
-        reminder = new Film(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), directorEdit->text(), h*60+m);
+    if(eventButton->isChecked()) {
+        QDateTime startDate = startDateEdit->dateTime();
+    startDate.setTime(startTimeEdit->time());
+        QDateTime endDate = endDateEdit->dateTime();
+        endDate.setTime(endTimeEdit->time());
+        reminder = new Event(0, titleEdit->text(), descrEdit->toPlainText(), startDate, endDate, timeEdit->isChecked());
+}
+    if(deadlineButton->isChecked()) {
+        QDateTime date = endDateEdit->dateTime();
+        date.setTime(endTimeEdit->time());
+        reminder = new Deadline(0, titleEdit->text(), descrEdit->toPlainText(), date, timeEdit->isChecked());
     }
-    if(articButton->isChecked()) {
-        reminder = new Article(0, titleEdit->text(), (yearEdit->text()).toInt(), descrEdit->toPlainText(), imgEdit->text(), authorEdit->text(), magazEdit->text());
+    if(memoButton->isChecked()) {
+        reminder = new Memo(0, titleEdit->text(), descrEdit->toPlainText(), doneEdit->isChecked());
     }
 
     emit submitted(reminder);

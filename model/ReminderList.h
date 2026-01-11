@@ -7,11 +7,26 @@
 
 class ReminderList {
 
+template<typename Iter>
+class iterator_range {
+
+public:
+    iterator_range(Iter begin, Iter end);
+    Iter begin() const;
+    Iter end() const;
+
+private:
+    Iter begin_, end_;
+
+};
+
 public:
     ReminderList();
-    ReminderList(QMap<unsigned int, std::unique_ptr<AbstractReminder>>& list);
+    ReminderList(const QMap<unsigned int, std::unique_ptr<AbstractReminder>>& list);
+    ReminderList(const ReminderList& l);
 
     unsigned int getNumElem() const;
+    AbstractReminder& getReminders();
 
     void add(const AbstractReminder& r);
     AbstractReminder& remove(unsigned int id);
@@ -19,7 +34,7 @@ public:
     ReminderList& search(QString text) const;
 
 private:
-    QMap<unsigned int, std::unique_ptr<AbstractReminder>>* list;
+    std::unique_ptr<QMap<unsigned int, std::unique_ptr<AbstractReminder>>> list;
     unsigned int n_elem;
 
 };
