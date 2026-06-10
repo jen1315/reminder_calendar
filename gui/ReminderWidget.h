@@ -2,7 +2,7 @@
 #define REMINDERWIDGET_H
 
 #include <QWidget>
-#include <QLineEdit>
+#include <QObject>
 #include "../model/ReminderVisitor.h"
 
 class ReminderWidget: public QWidget, public ReminderVisitor {
@@ -11,7 +11,7 @@ class ReminderWidget: public QWidget, public ReminderVisitor {
 public:
     ReminderWidget(QWidget *parent=nullptr);
     QWidget *getWidget();
-    QMap<QString, QLineEdit*> *getEdits();
+    QMap<QString, QObject*>* getEdits();
 
     void visit(const Event *event);
     void visit(const Deadline *deadline);
@@ -21,9 +21,11 @@ public:
     void visitEdit(const Deadline *deadline);
     void visitEdit(const Memo *memo);
 
+    static void clearLayout(QLayout *layout);
+
 private:
     QWidget *widget;
-    QMap<QString, QLineEdit*> *edits;
+    QMap<QString, QObject*> *edits;
 };
 
 #endif

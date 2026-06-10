@@ -2,18 +2,20 @@
 #define JSONFILE_H
 
 #include <QFile>
-#include "./model/AbstractReminder.h"
+#include "./model/ReminderList.h"
 
 class JsonFile {
 
 public:
     JsonFile(const QString jsonUrl);
-    QMap<int, AbstractReminder*>& getMap() const;
-    void submitChanges(int id) const;
+
+    ReminderList& getList();
+    void erase(const unsigned int pos);
+    void save(const AbstractReminder& r, bool isAdd);
 
 private:
     QFile *file;
-    QMap<int, AbstractReminder*> *calendar;
+    ReminderList *list;
 
 };
 

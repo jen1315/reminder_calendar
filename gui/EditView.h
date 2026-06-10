@@ -16,7 +16,6 @@ class EditView : public QWidget {
 public:
     explicit EditView(QWidget *parent=nullptr);
     void setReminder(AbstractReminder& reminder);
-    void setAdd();
     
 private:
     AbstractReminder *reminder;

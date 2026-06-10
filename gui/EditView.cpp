@@ -1,6 +1,8 @@
 #include "EditView.h"
 
 #include <QFormLayout>
+#include <QDateTimeEdit>
+#include <QCheckBox>
 #include "../model/Event.h"
 #include "../model/Deadline.h"
 #include "../model/Memo.h"
@@ -26,7 +28,7 @@ EditView::EditView(QWidget *parent) : QWidget(parent) {
 }
 
 void EditView::setReminder(AbstractReminder& m) {
-    Util::clearLayout(detailLayout);
+    ReminderWidget::clearLayout(detailLayout);
     reminder = &m;
     titleEdit->setText(m.getTitle());
     descrEdit->setText(m.getDescr());
@@ -40,21 +42,35 @@ void EditView::toSubmit() {
     reminder->setTitle(titleEdit->text());
     reminder->setDescr(descrEdit->toPlainText());
 
-    QMap<QString, QLineEdit*> *edits = visitor->getEdits();
+    QMap<QString, QObject*> *edits = visitor->getEdits();
     if(dynamic_cast<Event*>(reminder)) {
         Event *e = static_cast<Event*>(reminder);
-        e->setStartDate((*edits)["startDate"]->dateTime());
-        e->setEndDate((*edits)["endDate"]->dateTime());
-        e->setHasTime((*edits)["hasTime"]);
+        QDateTime start, end;
+        bool hasTime = static_cast<QCheckBox*>((*edits)["hasTime"])->isChecked();
+        start.setDate(static_cast<QDateEdit*>((*edits)["startDate"])->date());
+        end.setDate(static_cast<QDateEdit*>((*edits)["endDate"])->date());
+        if(hasTime) {
+            start.setTime(static_cast<QTimeEdit*>((*edits)["startTime"])->time());
+            end.setTime(static_cast<QTimeEdit*>((*edits)["endTime"])->time());
+        }
+        e->setStartDate(start);
+        e->setEndDate(end);
+        e->setHasTime(hasTime);
     }
     if(dynamic_cast<Deadline*>(reminder)) {
         Deadline *d = static_cast<Deadline*>(reminder);
-        d->setDate((*edits)["date"]->dateTime());
-        d->setHasTime((*edits)["hasTime"]);
+        QDateTime date;
+        bool hasTime = static_cast<QCheckBox*>((*edits)["hasTime"])->isChecked();
+        date.setDate(static_cast<QDateEdit*>((*edits)["date"])->date());
+        if(hasTime)
+            date.setTime(static_cast<QTimeEdit*>((*edits)["time"])->time());
+        d->setDate(date);
+        d->setHasTime(hasTime);
+        d->setIsDone(static_cast<QCheckBox*>((*edits)["done"])->isChecked());
     }
     if(dynamic_cast<Memo*>(reminder)) {
         Memo *m = static_cast<Memo*>(reminder);
-        m->setIsDone((*edits)["done"]);
+        m->setIsDone(static_cast<QCheckBox*>((*edits)["done"])->isChecked());
     }
     qDeleteAll(*edits);
     edits->clear();

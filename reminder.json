@@ -1,0 +1,50 @@
+[
+    {
+        "descr": "(priorità)",
+        "end_date": "2026-05-03 00:00:00",
+        "has_time": false,
+        "id": 0,
+        "start_date": "2026-05-01 00:00:00",
+        "title": "Appello primordiale",
+        "type": "event"
+    },
+    {
+        "date": "2026-06-15 00:00:00",
+        "descr": "Un calendario con promemoria.\nScritto con C++ e Qt.",
+        "has_time": false,
+        "id": 1,
+        "title": "Progetto",
+        "type": "deadline"
+    },
+    {
+        "descr": "Notino\nche è un Kobo btw",
+        "done": true,
+        "id": 2,
+        "title": "Notes",
+        "type": "memo"
+    },
+    {
+    },
+    {
+    },
+    {
+        "date": "2026-06-15 10:30:00",
+        "descr": "",
+        "has_time": true,
+        "id": 5,
+        "title": "Programmazione ad oggetti",
+        "type": "deadline"
+    },
+    {
+        "date": "2026-06-29 14:00:00",
+        "descr": "appello di gruppo",
+        "has_time": true,
+        "id": 6,
+        "title": "Ambasciatori sostenibilità",
+        "type": "deadline"
+    },
+    {
+    },
+    {
+    }
+]

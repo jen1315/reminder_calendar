@@ -1,41 +1,36 @@
-#include "MediaView.h"
-#include "../model/Utilities.h"
+#include "ReminderView.h"
 
-MediaView::MediaView(QWidget *parent) : QWidget(parent) {
-    titleLabel = new QLabel();
-    descrLabel = new QLabel();
+ReminderView::ReminderView(QWidget *parent) : QWidget(parent) {
+    titleLabel = new QLabel(this);
+    descrLabel = new QLabel(this);
     visitLayout = new QVBoxLayout();
     layout = new QVBoxLayout();
-
+    editButton = new QPushButton("Edit", this);
+    deleteButton = new QPushButton("Delete", this);
+    
     titleLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     descrLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-    QPixmap image("../img/save.png");
-    QPixmap scaled = image.scaled(QSize(50, 50), Qt::KeepAspectRatio);
-    QLabel *imageEdit = new QLabel();
-    imageEdit->setPixmap(scaled);
-    
-    editButton = new QPushButton("Edit");
-    
-    QHBoxLayout *hlayout = new QHBoxLayout();
-    QVBoxLayout *vlayout = new QVBoxLayout();
+    QHBoxLayout *hlayout = new QHBoxLayout();  
+    hlayout->addWidget(editButton);
+    hlayout->addWidget(deleteButton);
 
-    hlayout->addWidget(image)    
-    
-    vlayout->addWidget(editButton);
+    QVBoxLayout *vlayout = new QVBoxLayout();
+    vlayout->addLayout(hlayout);
     vlayout->addWidget(titleLabel);
     vlayout->addWidget(descrLabel);
     vlayout->addLayout(visitLayout);
 
     layout->addLayout(vlayout);
 
-    connect(editButton, &QPushButton::clicked, this, &MediaView::toEdit);
+    connect(editButton, &QPushButton::clicked, this, &ReminderView::toEdit);
+    connect(deleteButton, &QPushButton::clicked, this, &ReminderView::toDelete);
 
     setLayout(layout);
 }
 
-void MediaView::displayReminder(AbstractReminder& m) {
-    Util::clearLayout(visitLayout);
+void ReminderView::displayReminder(AbstractReminder& m) {
+    ReminderWidget::clearLayout(visitLayout);
     reminder = &m;
     titleLabel->setText("Title: " + m.getTitle());
     descrLabel->setText(m.getDescr());
@@ -45,7 +40,10 @@ void MediaView::displayReminder(AbstractReminder& m) {
     visitLayout->addWidget(visitor->getWidget());
 }
 
-AbstractReminder& MediaView::getReminder() const {
+AbstractReminder& ReminderView::getReminder() const {
     return *reminder;
 }
 
+void ReminderView::toDelete() {
+    emit deleted(reminder->getId());
+}

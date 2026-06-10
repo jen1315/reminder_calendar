@@ -1,28 +1,30 @@
 #ifndef DEADLINE_H
-#define DEADLINE_h
+#define DEADLINE_H
 
-#include <memory>
 #include <QDateTime>
 #include "AbstractReminder.h"
 
 class Deadline : public AbstractReminder {
 
 public:
-    Deadline(unsigned int id, QString title, QString descr, QDateTime& date, bool hasTime);
-    Deadline(Deadline& d);
+    Deadline(const unsigned int id, const QString title, const QString descr, const QDateTime& date, const bool hasTime, const bool isDone);
+    Deadline(const Deadline& d);
 
-    QDateTime& getDate() const;
+    QDateTime getDate() const;
     bool getHasTime() const;
+    bool getIsDone() const;
 
     void setDate(const QDateTime& endDate);
     void setHasTime(const bool hasTime);
+    void setIsDone(const bool isDone);
 
     virtual void accept(ReminderVisitor *visitor);
     virtual void acceptEdit(ReminderVisitor *visitor);
     
 private:
-    std::unique_ptr<QDateTime> date;
+    QDateTime date;
     bool hasTime;
+    bool isDone;
 
 };
 

@@ -6,8 +6,8 @@
 class Memo : public AbstractReminder {
 
 public:
-    Memo(unsigned int id, QString title, QString descr, bool done);
-    Memo(Memo& m);
+    Memo(const unsigned int id, const QString title, const QString descr, const bool done);
+    Memo(const Memo& m);
 
     bool getIsDone() const;
 

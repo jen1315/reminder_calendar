@@ -1,63 +1,88 @@
 #include "ReminderList.h"
-template<typename Iter>
-ReminderList::iterator_range::iterator_range(Iter begin, Iter end) : begin_(begin), end_(end) {}
-
-template<typename Iter>
-ReminderList::iterator_range::begin() const {
-    return _begin;
-}
-
-template<typename Iter>
-ReminderList::iterator_range::end() const {
-    return _end;
-}
+#include "Event.h"
+#include "Deadline.h"
 
 ReminderList::ReminderList() {
-    list = new QMap<unsigned int, std::unique_ptr<AbstractReminder>>();
-    n_elem = 0;
+    counter = 0;
 }
 
-ReminderList::ReminderList(const QMap<unsigned int, std::unique_ptr<AbstractReminder>>& map) : list(map), n_elem(map.size()) {}
+ReminderList::ReminderList(const QMap<unsigned int, AbstractReminder*>& map, unsigned int counter) : list(map), counter(counter) {}
 
-ReminderList::ReminderList(const ReminderList& l) : list(l), n_elem(l.getNumElem()) {}
+ReminderList::ReminderList(const ReminderList& l) : list(l.list), counter(l.counter) {}
 
-unsigned int ReminderList::getNumElem() const {
-    return n_elem;
+ReminderList::~ReminderList() {
+    for(auto it=list.begin(); it!=list.end(); it++) {
+        delete *it;
+    }
 }
 
-auto getReminders() {
-    return iterator_range<QMap<T>::iterator>(list->begin(), list->end);
+unsigned int ReminderList::getCounter() const {
+    return counter;
 }
 
-AbstractReminder& ReminderList::get(unsigned int id) {
-    return list.find(id);
+QMap<unsigned int, AbstractReminder*>::iterator ReminderList::begin() {
+    return list.begin();
 }
 
-void ReminderList::add(const AbstractReminder& r) {
-    list.insert(r.getId(), std::make_unique<AbstractReminder>(r));
+QMap<unsigned int, AbstractReminder*>::iterator ReminderList::end() {
+    return list.end();
 }
 
-AbstractReminder& ReminderList::remove(const unsigned int id) {
-    if(list.erase(id))
-        n_elem -= 1;
+QMap<unsigned int, AbstractReminder*>::const_iterator ReminderList::begin() const {
+    return list.begin();
 }
 
-ReminderList& search(const QString text) const {
+QMap<unsigned int, AbstractReminder*>::const_iterator ReminderList::end() const {
+    return list.end();
+}
+
+ReminderList& ReminderList::operator=(const ReminderList &other) {
+    for(auto it=other.begin(); it!=other.end(); ++it)
+        add(**it);
+    counter = other.counter;
+    return *this;
+}
+    
+
+AbstractReminder& ReminderList::get(const unsigned int id) const {
+    return *(list[id]);
+}
+
+void ReminderList::add(AbstractReminder& r) {
+    if(!list.contains(r.getId())) {
+        counter += 1;
+    }
+    list.insert(r.getId(), &r);
+}
+
+bool ReminderList::remove(const unsigned int id) {
+    if(list.contains(id)) {
+        delete list[id];
+        list.remove(id);
+        return true;
+    }
+    return false;
+}
+
+ReminderList& ReminderList::search(const QString text) const {
     ReminderList *results = new ReminderList();
     for(auto it = list.begin(); it!=list.end(); ++it) {
         if(((*it)->getTitle()).contains(text) || ((*it)->getDescr()).contains(text))
-            results.add((*it)->getId(), *it);
+            results->add(**it);
     }
-    return *results; 
+    return *results;
 }
 
-auto begin() {
-    return list->begin();
+ReminderList& ReminderList::getByDate(const QDate& date) const {
+    ReminderList *results = new ReminderList();
+    for(auto it = list.begin(); it!=list.end(); ++it) {
+        if(dynamic_cast<Event*>(*it)) {
+            Event *e = static_cast<Event*>(*it);
+            if(date>=e->getStartDate().date() && date<=e->getEndDate().date())
+                results->add(**it);
+        }
+        if(dynamic_cast<Deadline*>(*it) && static_cast<Deadline*>(*it)->getDate().date()==date)
+            results->add(**it);
+    }
+    return *results;
 }
-
-auto end() {
-    return list->end();
-}
-
-
-

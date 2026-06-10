@@ -12,8 +12,8 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
     startTimeEdit = new QTimeEdit(this);
     endDateEdit = new QDateEdit(this);
     endTimeEdit = new QTimeEdit(this);
-    timeEdit = new QCheckBox("Does it have time?", this);
-    doneEdit = new QCheckBox("Is it done?", this);
+    timeEdit = new QCheckBox(this);
+    doneEdit = new QCheckBox(this);
 
     submitButton = new QPushButton("Submit", this);
     detailLayout = new QVBoxLayout();
@@ -31,13 +31,14 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
     buttons->addWidget(memoButton);
     
     detailForm = new QFormLayout();
-    detailForm->addRow(timeEdit);
+    detailForm->addRow("Does it have time?", timeEdit);
     detailForm->addRow("From:", startDateEdit);
     detailForm->addRow("Time:", startTimeEdit);
     detailForm->addRow("To:", endDateEdit);
     detailForm->addRow("Time:", endTimeEdit);
     
-    detailForm->addRow(doneEdit);
+    doneEdit->setLayoutDirection(Qt::RightToLeft);
+    detailForm->addRow("Is it done?", doneEdit);
 
     layout->addLayout(form);
     layout->addLayout(buttons);
@@ -59,11 +60,20 @@ void AddView::toSubmit() {
     if(deadlineButton->isChecked()) {
         QDateTime date = endDateEdit->dateTime();
         date.setTime(endTimeEdit->time());
-        reminder = new Deadline(0, titleEdit->text(), descrEdit->toPlainText(), date, timeEdit->isChecked());
+        reminder = new Deadline(0, titleEdit->text(), descrEdit->toPlainText(), date, timeEdit->isChecked(), doneEdit->isChecked());
     }
     if(memoButton->isChecked()) {
         reminder = new Memo(0, titleEdit->text(), descrEdit->toPlainText(), doneEdit->isChecked());
     }
 
     emit submitted(reminder);
+}
+
+void AddView::clear() {
+    titleEdit->clear();
+    descrEdit->clear();
+    startDateEdit->clear();
+    endDateEdit->clear();
+    startTimeEdit->clear();
+    endTimeEdit->clear();
 }

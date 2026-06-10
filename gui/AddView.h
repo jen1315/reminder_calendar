@@ -19,7 +19,7 @@ class AddView : public QWidget {
 
 public:
     explicit AddView(QWidget *parent=nullptr);
-    void clearLayout(QLayout* layout);
+    void clear();
     
 private:
     AbstractReminder *reminder;

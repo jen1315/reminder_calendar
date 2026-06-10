@@ -11,11 +11,11 @@ ReminderListView::ReminderListView(QWidget *parent) : QWidget(parent) {
     listWidget->setSpacing(10);
 
     QWidget *buttonWidget = new QWidget(this);
-    QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addWidget(addButton);
-    buttonWidget->setLayout(vlayout);    
+    QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->addWidget(addButton);
+    buttonWidget->setLayout(hlayout);    
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(buttonWidget);
     layout->addWidget(listWidget);
 
@@ -24,17 +24,18 @@ ReminderListView::ReminderListView(QWidget *parent) : QWidget(parent) {
     connect(addButton, &QPushButton::clicked, this, &ReminderListView::addClicked);
 }
 
-void ReminderListView::displayReminderList(ReminderList& l) {
+void ReminderListView::displayReminderList(const ReminderList& l) {
     list = new ReminderList(l);
     clear();
-/*
-    for(auto it : l.getReminders()) {
+
+    for(auto it=list->begin(); it!=list->end(); ++it) {
         QListWidgetItem *item = new QListWidgetItem();
-        QVariant reminder((*it)->getId());
-        item->setData(Qt::UserRole, reminder);
+        QVariant id((*it)->getId());
+        item->setData(Qt::UserRole, id);
 
         QWidget *widget = new QWidget(this);
         QLabel *titleLabel = new QLabel((*it)->getTitle(), widget);
+        QLabel *descrLabel = new QLabel((*it)->getDescr(), widget);
        
         QHBoxLayout *wlayout = new QHBoxLayout();
         wlayout->addWidget(titleLabel);
@@ -46,31 +47,35 @@ void ReminderListView::displayReminderList(ReminderList& l) {
     
         listWidget->addItem(item);
         listWidget->setItemWidget(item, widget);
-    }*/
+    }
 }
 
 AbstractReminder& ReminderListView::getReminder(const unsigned int id) const {
     return list->get(id);
 }
 
-void ReminderListView::setReminder(AbstractReminder& reminder) {
-    int id = reminder.getId();
-    list->add(reminder);
-    displayReminderList(*list);
+ReminderList& ReminderListView::searchReminders(const QString text) const {
+    return list->search(text);
 }
 
-ReminderList& ReminderListView::getReminderList() const {
-    return *list;
+ReminderList& ReminderListView::getRemindersByDate(const QDate& date) const {
+    return list->getByDate(date);
+}
+
+unsigned int ReminderListView::getCounter() const {
+    return list->getCounter();
 }
 
 void ReminderListView::clear() {
     listWidget->clear();
 }
 
-void ReminderListView::addReminder(AbstractReminder& reminder) {
-    reminder.setId(list->getNumElem());
-    ReminderListView::setReminder(reminder);
+void ReminderListView::insertReminder(AbstractReminder& reminder) {
+    list->add(reminder);
+    displayReminderList(*list);
 }
 
-void ReminderListView::removeReminder() {
+void ReminderListView::removeReminder(unsigned int id) {
+    list->remove(id);
+    displayReminderList(*list);
 }

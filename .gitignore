@@ -1,2 +1,3 @@
 *.o
 .qmake.stash
+reminder_calendar

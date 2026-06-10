@@ -3,38 +3,43 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include <QLineEdit>
 #include "ReminderListView.h"
 #include "ReminderView.h"
-//#include "EditView.h"
+#include "EditView.h"
 #include "AddView.h"
+#include "JsonFile.h"
+#include "CalendarView.h"
 
 class ViewManager : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit ViewManager(QWidget *parent=nullptr);
-    void setReminders(QMap<int, AbstractReminder*>& list);
+    explicit ViewManager(QString file, QWidget *parent=nullptr);
     
 private:
+    JsonFile *json;
     QStackedWidget *stackWidget;
     QPushButton *homeButton;
     QLineEdit *searchBar;
     QPushButton *searchButton;
 
+    ReminderListView *nextView;
     ReminderListView *memoView;
+    ReminderListView *searchView;
     ReminderView *reminderView;
-    ReminderListView *todayView;
-    //EditView *editView;
+    EditView *editView;
     AddView *addView;
+    CalendarView *calendarView;
 
 private slots:
     void viewReminder(QListWidgetItem* item);
     void viewSearch();
-    //void viewEdit();
+    void viewSearchSelected(QDate date);
     void viewAdd();
-    void submitReminder(AbstractReminder* reminder);
+    void viewEdit();
+    void editReminder(AbstractReminder* reminder);
     void addReminder(AbstractReminder* reminder);
+    void deleteReminder(unsigned int id);
     void switchHome();
 };
 

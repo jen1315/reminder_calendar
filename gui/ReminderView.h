@@ -15,18 +15,22 @@ public:
     explicit ReminderView(QWidget *parent = nullptr);
     void displayReminder(AbstractReminder& m);
     AbstractReminder& getReminder() const;
-    void clearLayout(QLayout* layout);
 
 private:
     AbstractReminder *reminder;
     QVBoxLayout *layout;
     QPushButton *editButton;
+    QPushButton *deleteButton;
     QLabel *titleLabel;
     QLabel *descrLabel;
     QVBoxLayout *visitLayout;
 
+private slots:
+    void toDelete();
+
 signals:
     void toEdit();
+    void deleted(unsigned int);
     
 };
 

@@ -1,18 +1,17 @@
 #ifndef EVENT_H
-#define EVENT_h
+#define EVENT_H
 
-#include <memory>
 #include <QDateTime>
 #include "AbstractReminder.h"
 
 class Event : public AbstractReminder {
 
 public:
-    Event(unsigned int id, QString title, QString descr, QDateTime& startDate, QDateTime& endDate, bool hasTime);
-    Event(Event& e);
+    Event(const unsigned int id, const QString title, const QString descr, const QDateTime& startDate, const QDateTime& endDate, const bool hasTime);
+    Event(const Event& e);
 
-    QDateTime& getStartDate() const;
-    QDateTime& getEndDate() const;
+    QDateTime getStartDate() const;
+    QDateTime getEndDate() const;
     bool getHasTime() const;
 
     void setStartDate(const QDateTime& startDate);
@@ -23,8 +22,8 @@ public:
     virtual void acceptEdit(ReminderVisitor *visitor);
     
 private:
-    std::unique_ptr<QDateTime> startDate;
-    std::unique_ptr<QDateTime> endDate;
+    QDateTime startDate;
+    QDateTime endDate;
     bool hasTime;
 
 };
