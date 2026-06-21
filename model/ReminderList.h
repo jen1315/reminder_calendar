@@ -1,23 +1,22 @@
 #ifndef REMINDERLIST_H
 #define REMINDERLIST_H
 
-#include <QMap>
+#include <QList>
 #include "AbstractReminder.h"
 
 class ReminderList {
 
 public:
-    ReminderList();
-    ReminderList(const QMap<unsigned int, AbstractReminder*>& list, unsigned int counter);
+    ReminderList() = default;
+    ReminderList(const QList<AbstractReminder*>& list);
     ReminderList(const ReminderList& l);
     ~ReminderList();
 
-    QMap<unsigned int, AbstractReminder*>::iterator begin();
-    QMap<unsigned int, AbstractReminder*>::iterator end();
-    QMap<unsigned int, AbstractReminder*>::const_iterator begin() const;
-    QMap<unsigned int, AbstractReminder*>::const_iterator end() const;
-    ReminderList& operator=(const ReminderList &other);
-    unsigned int getCounter() const;
+    QList<AbstractReminder*>::iterator begin();
+    QList<AbstractReminder*>::iterator end();
+    QList<AbstractReminder*>::const_iterator begin() const;
+    QList<AbstractReminder*>::const_iterator end() const;
+    unsigned int getSize() const;
 
     void add(AbstractReminder& r);
     bool remove(const unsigned int id);
@@ -26,8 +25,7 @@ public:
     ReminderList& getByDate(const QDate& date) const;
 
 private:
-    QMap<unsigned int, AbstractReminder*> list;
-    unsigned int counter;
+    QList<AbstractReminder*> list;
 
 };
 

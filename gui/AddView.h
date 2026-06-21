@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QCheckBox>
+#include <QLabel>
 #include "./model/AbstractReminder.h"
 #include "ReminderWidget.h"
 
@@ -24,7 +25,6 @@ public:
 private:
     AbstractReminder *reminder;
     QVBoxLayout *layout;
-    QVBoxLayout *detailLayout;
     QFormLayout *form;
     QFormLayout *detailForm;
 
@@ -42,12 +42,15 @@ private:
     QRadioButton *eventButton;
     QRadioButton *deadlineButton;
     QRadioButton *memoButton;
+    QLabel *errorLabel;
 
 private slots:
     void toSubmit();
+    void printError(QString error);
 
 signals:
     void submitted(AbstractReminder*);
+    void error(QString);
 };
 
 #endif

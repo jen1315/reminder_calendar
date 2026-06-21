@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include "ReminderListView.h"
+#include "ListView.h"
 #include "ReminderView.h"
 #include "EditView.h"
 #include "AddView.h"
@@ -23,9 +23,9 @@ private:
     QLineEdit *searchBar;
     QPushButton *searchButton;
 
-    ReminderListView *nextView;
-    ReminderListView *memoView;
-    ReminderListView *searchView;
+    ListView *nextView;
+    ListView *memoView;
+    ListView *searchView;
     ReminderView *reminderView;
     EditView *editView;
     AddView *addView;

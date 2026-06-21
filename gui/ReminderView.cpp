@@ -1,5 +1,7 @@
 #include "ReminderView.h"
 
+#include "Utilities.h"
+
 ReminderView::ReminderView(QWidget *parent) : QWidget(parent) {
     titleLabel = new QLabel(this);
     descrLabel = new QLabel(this);
@@ -30,7 +32,7 @@ ReminderView::ReminderView(QWidget *parent) : QWidget(parent) {
 }
 
 void ReminderView::displayReminder(AbstractReminder& m) {
-    ReminderWidget::clearLayout(visitLayout);
+    Utilities::clearLayout(visitLayout);
     reminder = &m;
     titleLabel->setText("Title: " + m.getTitle());
     descrLabel->setText(m.getDescr());

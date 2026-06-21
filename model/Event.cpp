@@ -32,6 +32,6 @@ void Event::accept(ReminderVisitor *visitor) {
     visitor->visit(this);
 }
 
-void Event::acceptEdit(ReminderVisitor *visitor) {
-    visitor->visitEdit(this);
+void Event::accept(ConstReminderVisitor *visitor) const {
+    visitor->visit(this);
 }

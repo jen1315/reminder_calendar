@@ -23,14 +23,14 @@ JsonFile::JsonFile(const QString jsonUrl) {
     }
     
     QJsonArray array = json.array();
-    QMap<unsigned int, AbstractReminder*> calendar;
+    QList<AbstractReminder*> calendar;
     unsigned int count = 0;
     
     for(auto it=array.begin(); it!=array.end(); ++it) {
         QJsonObject obj = it->toObject();
 
         QString type = obj["type"].toString();
-        int id = obj["id"].toInt();
+        int id = count;
         QString title = obj["title"].toString();
         QString descr = obj["descr"].toString();
 
@@ -52,7 +52,7 @@ JsonFile::JsonFile(const QString jsonUrl) {
         }
         count += 1;
     }
-    list = new ReminderList(calendar, count);
+    list = new ReminderList(calendar);
 }
 
 ReminderList& JsonFile::getList() {
@@ -68,8 +68,12 @@ void JsonFile::erase(const unsigned int pos) {
     file->close();
     
     QJsonArray array = json.array();
-    QJsonObject obj;
-    array.replace(pos, obj);
+    if(pos < array.size()-1) {
+        QJsonObject obj = (array.last()).toObject();
+        obj["id"] = (int)pos;
+        array.replace(pos, obj);
+    }
+    array.removeLast();
     json.setArray(array);
 
     file->open(QFile::WriteOnly | QFile::Truncate);
@@ -86,28 +90,12 @@ void JsonFile::save(const AbstractReminder& r, bool isAdd) {
     QJsonDocument json = QJsonDocument::fromJson(file->readAll());
     file->close();
 
-    QJsonObject obj;
+    obj = QJsonObject();
     obj["id"] = (int)(r.getId());
     obj["title"] = r.getTitle();
     obj["descr"] = r.getDescr();
-    if(dynamic_cast<const Event*>(&r)) {
-        const Event* e = static_cast<const Event*>(&r);
-        obj["start_date"] = e->getStartDate().toString("yyyy-MM-dd hh:mm:ss");
-        obj["end_date"] = e->getEndDate().toString("yyyy-MM-dd hh:mm:ss");
-        obj["has_time"] = e->getHasTime();
-        obj["type"] = "event";
-    }
-    if(dynamic_cast<const Deadline*>(&r)) {
-        const Deadline* d = static_cast<const Deadline*>(&r);
-        obj["date"] = d->getDate().toString("yyyy-MM-dd hh:mm:ss");
-        obj["has_time"] = d->getHasTime();
-        obj["type"] = "deadline";
-    }
-    if(dynamic_cast<const Memo*>(&r)) {
-        const Memo* m = static_cast<const Memo*>(&r);
-        obj["done"] = m->getIsDone();
-        obj["type"] = "memo";
-    }
+    
+    r.accept(this);
 
     QJsonArray array = json.array();
     if(isAdd)
@@ -119,4 +107,23 @@ void JsonFile::save(const AbstractReminder& r, bool isAdd) {
     file->open(QFile::WriteOnly | QFile::Truncate);
     file->write(json.toJson());
     file->close();
+}
+
+void JsonFile::visit(const Event *event) {
+    obj["start_date"] = event->getStartDate().toString("yyyy-MM-dd hh:mm:ss");
+    obj["end_date"] = event->getEndDate().toString("yyyy-MM-dd hh:mm:ss");
+    obj["has_time"] = event->getHasTime();
+    obj["type"] = "event";
+}
+
+void JsonFile::visit(const Deadline *deadline) {
+    obj["date"] = deadline->getDate().toString("yyyy-MM-dd hh:mm:ss");
+    obj["has_time"] = deadline->getHasTime();
+    obj["done"] = deadline->getIsDone();
+    obj["type"] = "deadline";
+}
+
+void JsonFile::visit(const Memo *memo) {
+    obj["done"] = memo->getIsDone();
+    obj["type"] = "memo";  
 }

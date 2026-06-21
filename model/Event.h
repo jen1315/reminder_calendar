@@ -18,8 +18,8 @@ public:
     void setEndDate(const QDateTime& endDate);
     void setHasTime(const bool hasTime);
 
-    virtual void accept(ReminderVisitor *visitor);
-    virtual void acceptEdit(ReminderVisitor *visitor);
+    void accept(ReminderVisitor *visitor) override;
+    void accept(ConstReminderVisitor *visitor) const override;
     
 private:
     QDateTime startDate;

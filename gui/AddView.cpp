@@ -14,9 +14,12 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
     endTimeEdit = new QTimeEdit(this);
     timeEdit = new QCheckBox(this);
     doneEdit = new QCheckBox(this);
+    errorLabel = new QLabel(this);
+
+    startDateEdit->setDate(QDate::currentDate());
+    endDateEdit->setDate(QDate::currentDate());
 
     submitButton = new QPushButton("Submit", this);
-    detailLayout = new QVBoxLayout();
     eventButton = new QRadioButton("Event", this);
     deadlineButton = new QRadioButton("Deadline", this);
     memoButton = new QRadioButton("Memo", this);
@@ -44,29 +47,44 @@ AddView::AddView(QWidget *parent) : QWidget(parent) {
     layout->addLayout(buttons);
     layout->addLayout(detailForm);
     layout->addWidget(submitButton);
+    layout->addWidget(errorLabel);
 
     connect(submitButton, &QPushButton::clicked, this, &AddView::toSubmit);
+    connect(this, SIGNAL(error(QString)), this, SLOT(printError(QString)));
     setLayout(layout);    
 }
 
 void AddView::toSubmit() {
-    if(eventButton->isChecked()) {
-        QDateTime startDate = startDateEdit->dateTime();
-    startDate.setTime(startTimeEdit->time());
-        QDateTime endDate = endDateEdit->dateTime();
-        endDate.setTime(endTimeEdit->time());
-        reminder = new Event(0, titleEdit->text(), descrEdit->toPlainText(), startDate, endDate, timeEdit->isChecked());
+    if((titleEdit->text()).isEmpty())
+        emit error(tr("The title is empty"));
+    else {
+        if(eventButton->isChecked()) {
+            QDateTime startDate = startDateEdit->dateTime();
+            startDate.setTime(startTimeEdit->time());
+            QDateTime endDate = endDateEdit->dateTime();
+            endDate.setTime(endTimeEdit->time());
+            if(startDate > endDate) 
+                emit error(tr("The start date is after the end date"));
+            else {
+                reminder = new Event(0, titleEdit->text(), descrEdit->toPlainText(), startDate, endDate, timeEdit->isChecked());
+                emit submitted(reminder);
+            }
+        }
+        if(deadlineButton->isChecked()) {
+            QDateTime date = startDateEdit->dateTime();
+            date.setTime(startTimeEdit->time());
+            reminder = new Deadline(0, titleEdit->text(), descrEdit->toPlainText(), date, timeEdit->isChecked(), doneEdit->isChecked());
+            emit submitted(reminder);
+        }
+        if(memoButton->isChecked()) {
+            reminder = new Memo(0, titleEdit->text(), descrEdit->toPlainText(), doneEdit->isChecked());
+            emit submitted(reminder);
+        }
+    }
 }
-    if(deadlineButton->isChecked()) {
-        QDateTime date = endDateEdit->dateTime();
-        date.setTime(endTimeEdit->time());
-        reminder = new Deadline(0, titleEdit->text(), descrEdit->toPlainText(), date, timeEdit->isChecked(), doneEdit->isChecked());
-    }
-    if(memoButton->isChecked()) {
-        reminder = new Memo(0, titleEdit->text(), descrEdit->toPlainText(), doneEdit->isChecked());
-    }
 
-    emit submitted(reminder);
+void AddView::printError(QString error) {
+    errorLabel->setText("<font color='pink'>"+ error+ "</font>");
 }
 
 void AddView::clear() {
@@ -76,4 +94,5 @@ void AddView::clear() {
     endDateEdit->clear();
     startTimeEdit->clear();
     endTimeEdit->clear();
+    errorLabel->clear();
 }

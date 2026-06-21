@@ -16,6 +16,6 @@ void Memo::accept(ReminderVisitor *visitor) {
     visitor->visit(this);
 }
 
-void Memo::acceptEdit(ReminderVisitor *visitor) {
-    visitor->visitEdit(this);
+void Memo::accept(ConstReminderVisitor *visitor) const {
+    visitor->visit(this);
 }

@@ -3,8 +3,9 @@
 
 #include <QCalendarWidget>
 #include "../model/ReminderList.h"
+#include "../model/ConstReminderVisitor.h"
 
-class CalendarView : public QWidget {
+class CalendarView : public QWidget, public ConstReminderVisitor {
     Q_OBJECT
 
 public:
@@ -12,6 +13,10 @@ public:
     void highlight(AbstractReminder& reminder);
     void removeHighlight(const QDate& date);
     void highlightReminders(const ReminderList& list);
+
+    void visit(const Event* event);
+    void visit(const Deadline* deadline);
+    void visit(const Memo* memo);
 
 private:
     QCalendarWidget *calendar;

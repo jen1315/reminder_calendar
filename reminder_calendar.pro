@@ -20,25 +20,32 @@ HEADERS += JsonFile.h \
            gui/AddView.h \
            gui/CalendarView.h \
            gui/EditView.h \
-           gui/ReminderListView.h \
+           gui/EditWidget.h \
+           gui/ListView.h \
+           gui/ListWidget.h \
            gui/ReminderView.h \
            gui/ReminderWidget.h \
            gui/ViewManager.h \
+           gui/Utilities.h \
            model/AbstractReminder.h \
            model/Deadline.h \
            model/Event.h \
            model/Memo.h \
            model/ReminderList.h \
-           model/ReminderVisitor.h
+           model/ReminderVisitor.h \
+           model/ConstReminderVisitor.h
 SOURCES += JsonFile.cpp \
            main.cpp \
            gui/AddView.cpp \
            gui/CalendarView.cpp \
            gui/EditView.cpp \
-           gui/ReminderListView.cpp \
+           gui/EditWidget.cpp \
+           gui/ListView.cpp \
+           gui/ListWidget.cpp \
            gui/ReminderView.cpp \
            gui/ReminderWidget.cpp \
            gui/ViewManager.cpp \
+           gui/Utilities.cpp \
            model/AbstractReminder.cpp \
            model/Deadline.cpp \
            model/Event.cpp \

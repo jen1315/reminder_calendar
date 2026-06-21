@@ -14,7 +14,7 @@ public:
     void setIsDone(const bool done);
 
     virtual void accept(ReminderVisitor *visitor);
-    virtual void acceptEdit(ReminderVisitor *visitor);
+    virtual void accept(ConstReminderVisitor *visitor) const;
 
 private:
     bool done;

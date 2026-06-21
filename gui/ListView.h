@@ -1,22 +1,21 @@
-#ifndef REMINDERLIST_VIEW_H
-#define REMINDERLIST_VIEW_H
+#ifndef REMINDERLISTVIEW_H
+#define REMINDERLISTVIEW_H
 
 #include <QWidget>
 #include <QListWidget>
 #include <QPushButton>
 #include "../model/ReminderList.h"
 
-
-class ReminderListView : public QWidget {
+class ListView : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ReminderListView(QWidget *parent=nullptr);
+    explicit ListView(QWidget *parent=nullptr);
     void displayReminderList(const ReminderList& list);
     ReminderList& searchReminders(const QString text) const;
     ReminderList& getRemindersByDate(const QDate& date) const;
     AbstractReminder& getReminder(const unsigned int id) const;
-    unsigned int getCounter() const;
+    unsigned int getSize() const;
     void insertReminder(AbstractReminder& reminder);
     void removeReminder(unsigned int id);
     void clear();

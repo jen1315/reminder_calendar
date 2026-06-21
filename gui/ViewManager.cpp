@@ -12,9 +12,9 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     searchBar = new QLineEdit(this);
     searchButton = new QPushButton("Search", this);
     
-    nextView = new ReminderListView(this);
+    nextView = new ListView(this);
     reminderView = new ReminderView(this);
-    searchView = new ReminderListView(this);
+    searchView = new ListView(this);
     editView = new EditView(this);
     addView = new AddView(this);
     calendarView = new CalendarView(this);
@@ -40,7 +40,7 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     connect(searchView, SIGNAL(reminderSelected(QListWidgetItem*)), this, SLOT(viewReminder(QListWidgetItem*)));
     connect(reminderView, &ReminderView::toEdit, this, &ViewManager::viewEdit);
     connect(editView, SIGNAL(submitted(AbstractReminder*)), this, SLOT(editReminder(AbstractReminder*)));
-    connect(nextView, &ReminderListView::addClicked, this, &ViewManager::viewAdd);
+    connect(nextView, &ListView::addClicked, this, &ViewManager::viewAdd);
     connect(addView, SIGNAL(submitted(AbstractReminder*)), this, SLOT(addReminder(AbstractReminder*)));
     connect(reminderView, SIGNAL(deleted(unsigned int)), this, SLOT(deleteReminder(unsigned int)));
     connect(calendarView, SIGNAL(dateSelected(QDate)), this, SLOT(viewSearchSelected(QDate)));
@@ -98,7 +98,7 @@ void ViewManager::editReminder(AbstractReminder* reminder) {
 }
 
 void ViewManager::addReminder(AbstractReminder* reminder) {
-    reminder->setId(nextView->getCounter());
+    reminder->setId(nextView->getSize());
     nextView->insertReminder(*reminder);
     json->save(*reminder, true);
     addView->clear();
@@ -110,5 +110,6 @@ void ViewManager::addReminder(AbstractReminder* reminder) {
 void ViewManager::deleteReminder(unsigned int id) {
     nextView->removeReminder(id);
     json->erase(id);
+    calendarView->highlightReminders(json->getList());
     switchHome();
 }

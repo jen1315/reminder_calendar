@@ -7,19 +7,26 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QTabWidget>
-#include "../model/ReminderList.h"
-#include "ReminderWidget.h"
+#include "EditWidget.h"
+#include "../model/AbstractReminder.h"
+#include "../model/ReminderVisitor.h"
 
-class EditView : public QWidget {
+class EditView : public QWidget, public ReminderVisitor {
     Q_OBJECT
 
 public:
     explicit EditView(QWidget *parent=nullptr);
-    void setReminder(AbstractReminder& reminder);
+    void setReminder(AbstractReminder& r);
+
+    void visit(Event *event);
+    void visit(Deadline *deadline);
+    void visit(Memo *memo);
     
 private:
     AbstractReminder *reminder;
-    ReminderWidget *visitor;
+    EditWidget* visitor;
+    QMap<QString, QObject*> *edits;
+
     QVBoxLayout *layout;
     QLineEdit *titleEdit;
     QTextEdit *descrEdit;

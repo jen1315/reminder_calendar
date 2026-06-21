@@ -2,9 +2,9 @@
 #define DEADLINE_H
 
 #include <QDateTime>
-#include "AbstractReminder.h"
+#include "Memo.h"
 
-class Deadline : public AbstractReminder {
+class Deadline : public Memo {
 
 public:
     Deadline(const unsigned int id, const QString title, const QString descr, const QDateTime& date, const bool hasTime, const bool isDone);
@@ -12,19 +12,16 @@ public:
 
     QDateTime getDate() const;
     bool getHasTime() const;
-    bool getIsDone() const;
 
     void setDate(const QDateTime& endDate);
     void setHasTime(const bool hasTime);
-    void setIsDone(const bool isDone);
 
-    virtual void accept(ReminderVisitor *visitor);
-    virtual void acceptEdit(ReminderVisitor *visitor);
+    void accept(ReminderVisitor *visitor) override;
+    void accept(ConstReminderVisitor *visitor) const override;
     
 private:
     QDateTime date;
     bool hasTime;
-    bool isDone;
 
 };
 

@@ -1,22 +1,19 @@
-#ifndef REMINDERWIDGET_H
-#define REMINDERWIDGET_H
+#ifndef LISTWIDGET_H
+#define LISTWIDGET_H
 
 #include <QWidget>
-#include <QObject>
 #include "../model/ConstReminderVisitor.h"
 
-class ReminderWidget: public QWidget, public ConstReminderVisitor {
+class ListWidget: public QWidget, public ConstReminderVisitor {
     Q_OBJECT
 
 public:
-    ReminderWidget(QWidget *parent=nullptr);
+    ListWidget(QWidget *parent=nullptr);
     QWidget *getWidget();
 
     void visit(const Event *event);
     void visit(const Deadline *deadline);
     void visit(const Memo *memo);
-
-    static void clearLayout(QLayout *layout);
 
 private:
     QWidget *widget;

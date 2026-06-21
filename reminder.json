@@ -1,50 +1,36 @@
 [
     {
-        "descr": "(priorità)",
-        "end_date": "2026-05-03 00:00:00",
-        "has_time": false,
+        "date": "2026-06-15 23:59:00",
+        "descr": "programmazione ad oggetti",
+        "done": false,
+        "has_time": true,
         "id": 0,
-        "start_date": "2026-05-01 00:00:00",
-        "title": "Appello primordiale",
-        "type": "event"
-    },
-    {
-        "date": "2026-06-15 00:00:00",
-        "descr": "Un calendario con promemoria.\nScritto con C++ e Qt.",
-        "has_time": false,
-        "id": 1,
-        "title": "Progetto",
+        "title": "Progetto reminders_calendar",
         "type": "deadline"
-    },
-    {
-        "descr": "Notino\nche è un Kobo btw",
-        "done": true,
-        "id": 2,
-        "title": "Notes",
-        "type": "memo"
-    },
-    {
-    },
-    {
     },
     {
         "date": "2026-06-15 10:30:00",
         "descr": "",
+        "done": true,
         "has_time": true,
-        "id": 5,
-        "title": "Programmazione ad oggetti",
+        "id": 1,
+        "title": "Appello di programmazione ad oggetti",
         "type": "deadline"
     },
     {
-        "date": "2026-06-29 14:00:00",
-        "descr": "appello di gruppo",
-        "has_time": true,
-        "id": 6,
-        "title": "Ambasciatori sostenibilità",
-        "type": "deadline"
+        "descr": "",
+        "end_date": "2026-06-14 23:00:00",
+        "has_time": false,
+        "id": 2,
+        "start_date": "2026-06-11 16:30:00",
+        "title": "Sagra del Portello",
+        "type": "event"
     },
     {
-    },
-    {
+        "descr": "Ocutears Alo",
+        "done": false,
+        "id": 3,
+        "title": "Acquistare collirio",
+        "type": "memo"
     }
 ]

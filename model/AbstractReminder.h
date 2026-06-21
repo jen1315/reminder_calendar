@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include "ReminderVisitor.h"
+#include "ConstReminderVisitor.h"
 
 class AbstractReminder {
 
@@ -23,7 +24,7 @@ public:
     void setDescr(const QString descr);
 
     virtual void accept(ReminderVisitor *visitor) = 0;
-    virtual void acceptEdit(ReminderVisitor *visitor) = 0;
+    virtual void accept(ConstReminderVisitor *visitor) const = 0;
 
 protected:
     unsigned int id;

@@ -2,13 +2,9 @@
 #include "Event.h"
 #include "Deadline.h"
 
-ReminderList::ReminderList() {
-    counter = 0;
-}
+ReminderList::ReminderList(const QList<AbstractReminder*>& list) : list(list) {}
 
-ReminderList::ReminderList(const QMap<unsigned int, AbstractReminder*>& map, unsigned int counter) : list(map), counter(counter) {}
-
-ReminderList::ReminderList(const ReminderList& l) : list(l.list), counter(l.counter) {}
+ReminderList::ReminderList(const ReminderList& l) : list(l.list) {}
 
 ReminderList::~ReminderList() {
     for(auto it=list.begin(); it!=list.end(); it++) {
@@ -16,52 +12,52 @@ ReminderList::~ReminderList() {
     }
 }
 
-unsigned int ReminderList::getCounter() const {
-    return counter;
+unsigned int ReminderList::getSize() const {
+    return list.size();
 }
 
-QMap<unsigned int, AbstractReminder*>::iterator ReminderList::begin() {
+QList<AbstractReminder*>::iterator ReminderList::begin() {
     return list.begin();
 }
 
-QMap<unsigned int, AbstractReminder*>::iterator ReminderList::end() {
+QList<AbstractReminder*>::iterator ReminderList::end() {
     return list.end();
 }
 
-QMap<unsigned int, AbstractReminder*>::const_iterator ReminderList::begin() const {
+QList<AbstractReminder*>::const_iterator ReminderList::begin() const {
     return list.begin();
 }
 
-QMap<unsigned int, AbstractReminder*>::const_iterator ReminderList::end() const {
+QList<AbstractReminder*>::const_iterator ReminderList::end() const {
     return list.end();
 }
-
-ReminderList& ReminderList::operator=(const ReminderList &other) {
-    for(auto it=other.begin(); it!=other.end(); ++it)
-        add(**it);
-    counter = other.counter;
-    return *this;
-}
-    
 
 AbstractReminder& ReminderList::get(const unsigned int id) const {
     return *(list[id]);
 }
 
 void ReminderList::add(AbstractReminder& r) {
-    if(!list.contains(r.getId())) {
-        counter += 1;
-    }
-    list.insert(r.getId(), &r);
+    unsigned int id = r.getId();
+    if(list.size() <= id)
+        list.append(&r);
+    else
+        list.replace(id, &r);
 }
 
 bool ReminderList::remove(const unsigned int id) {
-    if(list.contains(id)) {
-        delete list[id];
-        list.remove(id);
-        return true;
+
+    if(list.size() <= id)
+        return false;
+
+    if(list.size()-1 == id) {
+        list.removeLast();
     }
-    return false;
+    else {
+        delete list[id];
+        (list.last())->setId(id);
+        list.replace(id, list.takeLast());
+    }
+    return true;
 }
 
 ReminderList& ReminderList::search(const QString text) const {
