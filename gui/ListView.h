@@ -15,7 +15,10 @@ public:
     ReminderList& searchReminders(const QString text) const;
     ReminderList& getRemindersByDate(const QDate& date) const;
     AbstractReminder& getReminder(const unsigned int id) const;
+
+    ReminderList& getReminderList() const;
     unsigned int getSize() const;
+    
     void insertReminder(AbstractReminder& reminder);
     void removeReminder(unsigned int id);
     void clear();

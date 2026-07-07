@@ -20,7 +20,7 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     calendarView = new CalendarView(this);
 
     nextView->displayReminderList(json->getList());
-    calendarView->highlightReminders(json->getList());
+    calendarView->highlightReminders(nextView->getReminderList());
 
     stackWidget->addWidget(nextView);
     stackWidget->addWidget(reminderView);
@@ -46,9 +46,9 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     connect(calendarView, SIGNAL(dateSelected(QDate)), this, SLOT(viewSearchSelected(QDate)));
 
     QToolBar *toolbar = new QToolBar(this);
-    toolbar->addWidget(homeButton);
     toolbar->addWidget(searchBar);
     toolbar->addWidget(searchButton);
+    toolbar->insertSeparator(toolbar->addWidget(homeButton));
     
     addToolBar(Qt::TopToolBarArea, toolbar);
     setCentralWidget(widget);
@@ -93,7 +93,7 @@ void ViewManager::editReminder(AbstractReminder* reminder) {
     nextView->insertReminder(*reminder);
     json->save(*reminder, false);
     reminderView->displayReminder(*reminder);
-    calendarView->highlightReminders(json->getList());
+    calendarView->highlightReminders(nextView->getReminderList());
     stackWidget->setCurrentIndex(1);
 }
 
@@ -110,6 +110,6 @@ void ViewManager::addReminder(AbstractReminder* reminder) {
 void ViewManager::deleteReminder(unsigned int id) {
     nextView->removeReminder(id);
     json->erase(id);
-    calendarView->highlightReminders(json->getList());
+    calendarView->highlightReminders(nextView->getReminderList());
     switchHome();
 }

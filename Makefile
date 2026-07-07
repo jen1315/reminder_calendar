@@ -62,8 +62,8 @@ SOURCES       = JsonFile.cpp \
 		gui/ListWidget.cpp \
 		gui/ReminderView.cpp \
 		gui/ReminderWidget.cpp \
-		gui/ViewManager.cpp \
 		gui/Utilities.cpp \
+		gui/ViewManager.cpp \
 		model/AbstractReminder.cpp \
 		model/Deadline.cpp \
 		model/Event.cpp \
@@ -87,8 +87,8 @@ OBJECTS       = JsonFile.o \
 		ListWidget.o \
 		ReminderView.o \
 		ReminderWidget.o \
-		ViewManager.o \
 		Utilities.o \
+		ViewManager.o \
 		AbstractReminder.o \
 		Deadline.o \
 		Event.o \
@@ -183,15 +183,15 @@ DIST          = /usr/lib64/qt6/mkspecs/features/spec_pre.prf \
 		gui/ListWidget.h \
 		gui/ReminderView.h \
 		gui/ReminderWidget.h \
-		gui/ViewManager.h \
 		gui/Utilities.h \
+		gui/ViewManager.h \
 		model/AbstractReminder.h \
+		model/ConstReminderVisitor.h \
 		model/Deadline.h \
 		model/Event.h \
 		model/Memo.h \
 		model/ReminderList.h \
-		model/ReminderVisitor.h \
-		model/ConstReminderVisitor.h JsonFile.cpp \
+		model/ReminderVisitor.h JsonFile.cpp \
 		main.cpp \
 		gui/AddView.cpp \
 		gui/CalendarView.cpp \
@@ -201,8 +201,8 @@ DIST          = /usr/lib64/qt6/mkspecs/features/spec_pre.prf \
 		gui/ListWidget.cpp \
 		gui/ReminderView.cpp \
 		gui/ReminderWidget.cpp \
-		gui/ViewManager.cpp \
 		gui/Utilities.cpp \
+		gui/ViewManager.cpp \
 		model/AbstractReminder.cpp \
 		model/Deadline.cpp \
 		model/Event.cpp \
@@ -385,8 +385,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents JsonFile.h gui/AddView.h gui/CalendarView.h gui/EditView.h gui/EditWidget.h gui/ListView.h gui/ListWidget.h gui/ReminderView.h gui/ReminderWidget.h gui/ViewManager.h gui/Utilities.h model/AbstractReminder.h model/Deadline.h model/Event.h model/Memo.h model/ReminderList.h model/ReminderVisitor.h model/ConstReminderVisitor.h $(DISTDIR)/
-	$(COPY_FILE) --parents JsonFile.cpp main.cpp gui/AddView.cpp gui/CalendarView.cpp gui/EditView.cpp gui/EditWidget.cpp gui/ListView.cpp gui/ListWidget.cpp gui/ReminderView.cpp gui/ReminderWidget.cpp gui/ViewManager.cpp gui/Utilities.cpp model/AbstractReminder.cpp model/Deadline.cpp model/Event.cpp model/Memo.cpp model/ReminderList.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents JsonFile.h gui/AddView.h gui/CalendarView.h gui/EditView.h gui/EditWidget.h gui/ListView.h gui/ListWidget.h gui/ReminderView.h gui/ReminderWidget.h gui/Utilities.h gui/ViewManager.h model/AbstractReminder.h model/ConstReminderVisitor.h model/Deadline.h model/Event.h model/Memo.h model/ReminderList.h model/ReminderVisitor.h $(DISTDIR)/
+	$(COPY_FILE) --parents JsonFile.cpp main.cpp gui/AddView.cpp gui/CalendarView.cpp gui/EditView.cpp gui/EditWidget.cpp gui/ListView.cpp gui/ListWidget.cpp gui/ReminderView.cpp gui/ReminderWidget.cpp gui/Utilities.cpp gui/ViewManager.cpp model/AbstractReminder.cpp model/Deadline.cpp model/Event.cpp model/Memo.cpp model/ReminderList.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -450,8 +450,6 @@ moc_EditView.cpp: gui/EditView.h \
 
 moc_EditWidget.cpp: gui/EditWidget.h \
 		model/ConstReminderVisitor.h \
-		model/AbstractReminder.h \
-		model/ReminderVisitor.h \
 		moc_predefs.h \
 		/usr/lib64/qt6/libexec/moc
 	/usr/lib64/qt6/libexec/moc $(DEFINES) --include /home/jen1315/Documenti/unipd/prog_ogg/progetto2/reminder_calendar/moc_predefs.h -I/usr/lib64/qt6/mkspecs/linux-g++ -I/home/jen1315/Documenti/unipd/prog_ogg/progetto2/reminder_calendar -I/home/jen1315/Documenti/unipd/prog_ogg/progetto2/reminder_calendar -I/usr/include/qt6 -I/usr/include/qt6/QtWidgets -I/usr/include/qt6/QtGui -I/usr/include/qt6/QtCore -I/usr/include/c++/16 -I/usr/include/c++/16/x86_64-redhat-linux -I/usr/include/c++/16/backward -I/usr/lib/gcc/x86_64-redhat-linux/16/include -I/usr/local/include -I/usr/include gui/EditWidget.h -o moc_EditWidget.cpp
@@ -569,14 +567,17 @@ EditView.o: gui/EditView.cpp gui/EditView.h \
 		model/ConstReminderVisitor.h \
 		model/AbstractReminder.h \
 		model/ReminderVisitor.h \
-		gui/Utilities.h
+		gui/Utilities.h \
+		model/Event.h \
+		model/Deadline.h \
+		model/Memo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EditView.o gui/EditView.cpp
 
 EditWidget.o: gui/EditWidget.cpp gui/EditWidget.h \
 		model/ConstReminderVisitor.h \
+		model/Event.h \
 		model/AbstractReminder.h \
 		model/ReminderVisitor.h \
-		model/Event.h \
 		model/Deadline.h \
 		model/Memo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EditWidget.o gui/EditWidget.cpp
@@ -615,6 +616,9 @@ ReminderWidget.o: gui/ReminderWidget.cpp gui/ReminderWidget.h \
 		model/Memo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReminderWidget.o gui/ReminderWidget.cpp
 
+Utilities.o: gui/Utilities.cpp gui/Utilities.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Utilities.o gui/Utilities.cpp
+
 ViewManager.o: gui/ViewManager.cpp gui/ViewManager.h \
 		gui/ListView.h \
 		model/ReminderList.h \
@@ -629,9 +633,6 @@ ViewManager.o: gui/ViewManager.cpp gui/ViewManager.h \
 		JsonFile.h \
 		gui/CalendarView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ViewManager.o gui/ViewManager.cpp
-
-Utilities.o: gui/Utilities.cpp gui/Utilities.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Utilities.o gui/Utilities.cpp
 
 AbstractReminder.o: model/AbstractReminder.cpp model/AbstractReminder.h \
 		model/ReminderVisitor.h \

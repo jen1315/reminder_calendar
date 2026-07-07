@@ -9,9 +9,11 @@ void Utilities::clearLayout(QLayout *layout) {
     QLayout *subLayout;
     QWidget *widget = new QWidget();
     while(QLayoutItem *item = layout->takeAt(0)) {
-        if(widget = item->widget())
+        widget = item->widget();
+        subLayout = item->layout();
+        if(widget)
             delete widget;
-        else if(subLayout = item->layout())
+        else if(subLayout)
             clearLayout(subLayout);
         delete item;
     }

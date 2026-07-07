@@ -63,7 +63,8 @@ bool ReminderList::remove(const unsigned int id) {
 ReminderList& ReminderList::search(const QString text) const {
     ReminderList *results = new ReminderList();
     for(auto it = list.begin(); it!=list.end(); ++it) {
-        if(((*it)->getTitle()).contains(text) || ((*it)->getDescr()).contains(text))
+        if(((*it)->getTitle()).contains(text, Qt::CaseInsensitive) || 
+           ((*it)->getDescr()).contains(text, Qt::CaseInsensitive))
             results->add(**it);
     }
     return *results;

@@ -64,6 +64,10 @@ ReminderList& ListView::getRemindersByDate(const QDate& date) const {
     return list->getByDate(date);
 }
 
+ReminderList& ListView::getReminderList() const {
+    return *list;
+}
+
 unsigned int ListView::getSize() const {
     return list->getSize();
 }
