@@ -4,10 +4,8 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    
-    QString json = "reminder.json";
 
-    ViewManager view(json);
+    ViewManager view;
     view.show();
 
     return app.exec();

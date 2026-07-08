@@ -1,16 +1,19 @@
 #include "ViewManager.h"
+
 #include <QDebug>
 #include <QToolBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFileDialog>
+#include <QStatusBar>
 
-ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
-    json = new JsonFile(file);
-
+ViewManager::ViewManager(QWidget *parent) : QMainWindow(parent) {
+    json = nullptr;
     stackWidget = new QStackedWidget(this);
-    homeButton = new QPushButton("All reminders", this);
     searchBar = new QLineEdit(this);
     searchButton = new QPushButton("Search", this);
+    importButton = new QPushButton("Load", this);
+    homeButton = new QPushButton("All reminders", this);
     
     nextView = new ListView(this);
     reminderView = new ReminderView(this);
@@ -18,9 +21,6 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     editView = new EditView(this);
     addView = new AddView(this);
     calendarView = new CalendarView(this);
-
-    nextView->displayReminderList(json->getList());
-    calendarView->highlightReminders(nextView->getReminderList());
 
     stackWidget->addWidget(nextView);
     stackWidget->addWidget(reminderView);
@@ -34,6 +34,7 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     QWidget *widget = new QWidget(this);
     widget->setLayout(layout);
 
+    connect(importButton, &QPushButton::clicked, this, &ViewManager::loadFile);
     connect(homeButton, &QPushButton::clicked, this, &ViewManager::switchHome);
     connect(nextView, SIGNAL(reminderSelected(QListWidgetItem*)), this, SLOT(viewReminder(QListWidgetItem*)));
     connect(searchButton, &QPushButton::clicked, this, &ViewManager::viewSearch);
@@ -46,12 +47,29 @@ ViewManager::ViewManager(QString file, QWidget *parent) : QMainWindow(parent) {
     connect(calendarView, SIGNAL(dateSelected(QDate)), this, SLOT(viewSearchSelected(QDate)));
 
     QToolBar *toolbar = new QToolBar(this);
-    toolbar->addWidget(searchBar);
+    toolbar->addWidget(importButton);
+    toolbar->insertSeparator(toolbar->addWidget(searchBar));
     toolbar->addWidget(searchButton);
     toolbar->insertSeparator(toolbar->addWidget(homeButton));
     
     addToolBar(Qt::TopToolBarArea, toolbar);
     setCentralWidget(widget);
+    statusBar()->showMessage(tr("No file loaded"));
+}
+
+void ViewManager::loadReminders(QString fileName) {
+    if(fileName!="") {
+        json = new JsonFile(fileName);
+        nextView->displayReminderList(json->getList());
+        calendarView->highlightReminders(nextView->getReminderList());
+        statusBar()->showMessage(tr(fileName.toStdString().c_str()));
+    }
+}
+
+void ViewManager::loadFile() {
+    QString fileName = QFileDialog::getOpenFileName(this, 
+        tr("Load file"), "/home", tr("Json file (*.json)"));
+    loadReminders(fileName);
 }
 
 void ViewManager::viewReminder(QListWidgetItem* item) {
@@ -98,13 +116,20 @@ void ViewManager::editReminder(AbstractReminder* reminder) {
 }
 
 void ViewManager::addReminder(AbstractReminder* reminder) {
-    reminder->setId(nextView->getSize());
-    nextView->insertReminder(*reminder);
-    json->save(*reminder, true);
-    addView->clear();
-    reminderView->displayReminder(*reminder);
-    calendarView->highlight(*reminder);
-    stackWidget->setCurrentIndex(1);
+    if(!json) {
+        QString fileName = QFileDialog::getSaveFileName(this, 
+            tr("Save on file"), "/home", tr("Json file (*.json)"));
+        loadReminders(fileName);
+    }
+    if(json) {
+        reminder->setId(nextView->getSize());
+        nextView->insertReminder(*reminder);
+        json->save(*reminder, true);
+        addView->clear();
+        reminderView->displayReminder(*reminder);
+        calendarView->highlight(*reminder);
+        stackWidget->setCurrentIndex(1);
+    }
 }
 
 void ViewManager::deleteReminder(unsigned int id) {

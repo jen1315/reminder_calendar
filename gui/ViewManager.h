@@ -7,21 +7,24 @@
 #include "ReminderView.h"
 #include "EditView.h"
 #include "AddView.h"
-#include "JsonFile.h"
 #include "CalendarView.h"
+#include "JsonFile.h"
 
 class ViewManager : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit ViewManager(QString file, QWidget *parent=nullptr);
+    explicit ViewManager(QWidget *parent=nullptr);
+    void loadReminders(QString fileName);
     
 private:
     JsonFile *json;
     QStackedWidget *stackWidget;
-    QPushButton *homeButton;
     QLineEdit *searchBar;
     QPushButton *searchButton;
+    QPushButton *importButton;
+    QPushButton *homeButton;
+    QLabel *infoLoad;
 
     ListView *nextView;
     ListView *memoView;
@@ -32,6 +35,7 @@ private:
     CalendarView *calendarView;
 
 private slots:
+    void loadFile();
     void viewReminder(QListWidgetItem* item);
     void viewSearch();
     void viewSearchSelected(QDate date);
