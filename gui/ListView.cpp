@@ -5,6 +5,7 @@
 #include <QLabel>
 
 ListView::ListView(QWidget *parent) : QWidget(parent) {
+    list = new ReminderList();
     listWidget = new QListWidget(this);
     addButton = new QPushButton("Add", this);
 

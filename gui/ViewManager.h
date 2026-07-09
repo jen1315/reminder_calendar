@@ -22,9 +22,9 @@ private:
     QStackedWidget *stackWidget;
     QLineEdit *searchBar;
     QPushButton *searchButton;
-    QPushButton *importButton;
     QPushButton *homeButton;
-    QLabel *infoLoad;
+    QPushButton *importButton;
+    QPushButton *newButton;
 
     ListView *nextView;
     ListView *memoView;
@@ -35,16 +35,17 @@ private:
     CalendarView *calendarView;
 
 private slots:
+    void newFile();
     void loadFile();
     void viewReminder(QListWidgetItem* item);
     void viewSearch();
     void viewSearchSelected(QDate date);
     void viewAdd();
     void viewEdit();
+    void switchHome();
     void editReminder(AbstractReminder* reminder);
     void addReminder(AbstractReminder* reminder);
     void deleteReminder(unsigned int id);
-    void switchHome();
 };
 
 #endif
